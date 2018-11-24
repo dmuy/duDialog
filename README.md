@@ -87,22 +87,23 @@ new duDialog(null, 'This action cannot be undone, proceed?', duDlgTypes.OK_CANCE
     }
   }
 });
+```
+![alt text](https://lh3.googleusercontent.com/EFHvfdpnrXFCq-xp0zmutv-0DMJkBzbenqRez_YcabsGND-WtWatNOr0PXj4DB7dq3wxwYBXI4qeT6XjRhB1PAlwZrwaA-hVf2nMATCXyC71FWOpj72AlNVrjWOSFhZdRfq9HLUyOrrS1AC6OB9IEeJpjh-zRuLuCOIi_QnIod3PcbzzZb8Qq1TEWsjJxmX4p0KfwhA1RqWLWLdLexIsUrQzpsDm65Riqoisz5DQcShA8qbcgwpiAMgs3RBFz8aHMpbt4K768FdBImA6BQcCsfGfnHp8olCLXX2qPvpkSF6c3IZr_5ZY-iB2nseB0R6PCJrZpxZZAv1wjU6UXMViBvYOszf_QUg0Ro9kCzkdMDzrKpBJRByewST9R5g1zSlgnTPrzKDrm_13zZGo02Zzq26KMmWhJOvRkwwAxXMxv46o_OGSgSs872TBbhv3pldK-XYqrETd5XJN89YIlPxaSxbtgGt0DDLtR6k737sjXeZdmZ31WIjx7Ip0sQdebOPZXw6kAFlG-OqdZ8w6VEjABgwR8TDiedNn94WNBy_lWqc0VK_wy3WK67cb0rEygHM0bt0IqMH2Xr_H1WbDhHIfy1KtxLGeNAKyHFsgnrlRAxR9kfslo_kyjt516WVdEFtbf9y1jqx-uegC69WCYDkdA-Gf=w399-h165-no "Confirmation dialog")
 
+You can combine different configurations to get what you need for a dialog.
+```javascript
 // You can do this if you want to initialize a dialog for later use;
 // 'type' parameter is optional so i can specify the configuration after the message parameter
 // 'init: true' means that this is only initialization (dialog will not be shown unless you call '[dialog object].show()')
 var dlg = new duDialog('Title', 'This is a dialog message.', { init: true });
 ```
-![alt text](https://lh3.googleusercontent.com/EFHvfdpnrXFCq-xp0zmutv-0DMJkBzbenqRez_YcabsGND-WtWatNOr0PXj4DB7dq3wxwYBXI4qeT6XjRhB1PAlwZrwaA-hVf2nMATCXyC71FWOpj72AlNVrjWOSFhZdRfq9HLUyOrrS1AC6OB9IEeJpjh-zRuLuCOIi_QnIod3PcbzzZb8Qq1TEWsjJxmX4p0KfwhA1RqWLWLdLexIsUrQzpsDm65Riqoisz5DQcShA8qbcgwpiAMgs3RBFz8aHMpbt4K768FdBImA6BQcCsfGfnHp8olCLXX2qPvpkSF6c3IZr_5ZY-iB2nseB0R6PCJrZpxZZAv1wjU6UXMViBvYOszf_QUg0Ro9kCzkdMDzrKpBJRByewST9R5g1zSlgnTPrzKDrm_13zZGo02Zzq26KMmWhJOvRkwwAxXMxv46o_OGSgSs872TBbhv3pldK-XYqrETd5XJN89YIlPxaSxbtgGt0DDLtR6k737sjXeZdmZ31WIjx7Ip0sQdebOPZXw6kAFlG-OqdZ8w6VEjABgwR8TDiedNn94WNBy_lWqc0VK_wy3WK67cb0rEygHM0bt0IqMH2Xr_H1WbDhHIfy1KtxLGeNAKyHFsgnrlRAxR9kfslo_kyjt516WVdEFtbf9y1jqx-uegC69WCYDkdA-Gf=w399-h165-no "Confirmation dialog")
-
-You can combine different configurations to get what you need for a dialog.
 
 ### Selection Dialog
 Default item object format:
 ```javascript
 {
-	item: 'Item',   // item display text
-	value: 'Value'  // item value
+  item: 'Item',   // item display text
+  value: 'Value'  // item value
 }
 ```
 
