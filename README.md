@@ -41,22 +41,22 @@ Callback functions
 /* 
  * Triggers on OK button click; 'this' inside the callback refers to the dialog object
  * Paramters:
- *		e - event object
+ *    e - event object
  */
 okClick(e);
 
 /* 
  * Triggers on CANCEL button click; 'this' inside the callback refers to the dialog object
  * Paramters:
- *		e - event object
+ *    e - event object
  */
 cancelClick(e);
 
 /* 
  * Triggers on item selection change (selection dialog); 'this' inside the callback refers to the radio button
  * Paramters:
- *		e - event object
- *		i - select item (string or object) bound to the radio button
+ *    e - event object
+ *    i - select item (string or object) bound to the radio button
  */
 itemSelect(e, i);
 ```
@@ -82,8 +82,8 @@ new duDialog('Title', 'This is a dialog message.');
 new duDialog(null, 'This action cannot be undone, proceed?', duDlgTypes.OK_CANCEL, { okText: 'Proceed',
   callbacks: {
     okClick: function(){
-      this.hide();	// hides the dialog
       // do something
+      this.hide();  // hides the dialog
     }
   }
 });
@@ -112,8 +112,8 @@ On the `message` parameter, specify an array of string or object and set `select
 new duDialog('Select fruit', ['Apple', 'Banana', 'Mango', 'Orange', 'Strawberry'], duDlgTypes.NO_ACTION, {
   selection: true, 
   callbacks: {
-  	// e - event
-  	// i - select item
+    // e - event
+    // i - select item
     itemSelect: function(e, i){
       // this.value - value of the selected item (i.e 'Apple', 'Banana', etct)
     }
