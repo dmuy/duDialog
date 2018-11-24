@@ -8,8 +8,8 @@ Calling `duDialog()` will return the dialog object.
 Dialog constructor:
 ```javascript
 new duDialog(
-  title,    // string or null (for no title dialogs)
-  message,  // string or array of string/object (for selection dialog)
+  title,    // string || null (for no title dialogs)
+  message,  // string; accepts html string also || string array or object (for selection dialog)
   [type],   // optional; dialog button types (explained below)
   [config]  // optional; additional dialog configurations (explained below)
 )
