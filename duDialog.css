@@ -55,6 +55,7 @@
 	    flex-direction: column;
 	    justify-content: space-around;
 	    background-color: #ffffff;
+	    outline: none;
 	    -moz-border-radius: 4px;
 	    border-radius: 4px;
 		-moz-transform: scale(.8);
@@ -90,6 +91,7 @@
 		.du-dialog .dlg-content.content--scrolled { border-top: 1px solid #e0e0e0; }
 
 		.du-dialog .dlg-select-item {
+			position: relative;
 			margin: 0 -24px;
 			padding: 0 24px;
 			line-height: 48px;
@@ -101,14 +103,118 @@
 			.du-dialog .dlg-select-item:hover { background-color: #f5f5f5; }
 			.du-dialog .dlg-select-item:active { background-color: #e0e0e0; }
 
-		.du-dialog .dlg-select-item .dlg-select-radio {
-			cursor: pointer;
+		.du-dialog .dlg-select-item .dlg-select-radio,
+		.du-dialog .dlg-select-item .dlg-select-checkbox {
+			position: absolute;
+	        top: 12px;
+	        height: 18px;
+	        width: 18px;
+	        opacity: 0;
 		}
 
 		.du-dialog .dlg-select-item .dlg-select-lbl {
+			position: relative;
 			display: inline-block;
+			line-height: 36px;
+			padding-left: 32px;
 			cursor: pointer;
+			text-indent: 8px;
 		}
+
+			.du-dialog .dlg-select-item  .dlg-select-checkbox + .dlg-select-lbl:before {
+				content: '';
+				display: block;
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				top: 50%;
+				left: 6px;
+				cursor: pointer;
+				border: 2px solid #757575;
+				-moz-transform: translateY(-50%);
+				transform: translateY(-50%);
+				-moz-border-radius: 2px;
+				border-radius: 2px;
+				-moz-transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+				transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+	            will-change: border-color;
+			}
+
+				.du-dialog .dlg-select-item  .dlg-select-checkbox:checked + .dlg-select-lbl:before {
+					background-color: #1e88e5; 
+					border-color: #1e88e5;
+				}
+
+			.du-dialog .dlg-select-item  .dlg-select-checkbox + .dlg-select-lbl:after {
+				content: '';
+				display: block;
+				position: absolute;
+				top: 50%;
+				left: 9px;
+				width: 12px;
+				height: 6px;
+				margin-top: -6px;
+				cursor: pointer;
+				border-left: 2px solid #FFF;
+				border-bottom: 2px solid #FFF;
+				-moz-transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+				transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+				-moz-transform: rotate(-45deg) scale(0);
+				transform: rotate(-45deg) scale(0);
+	            will-change: transform;
+			}
+
+				.du-dialog .dlg-select-item  .dlg-select-checkbox:checked + .dlg-select-lbl:after {
+					-moz-transform: rotate(-45deg) scale(1);
+					transform: rotate(-45deg) scale(1);
+				}
+
+			.du-dialog .dlg-select-item  .dlg-select-radio + .dlg-select-lbl:before {
+				content: "";
+				display: block;
+				position: absolute;
+				height: 16px;
+	            width: 16px;
+				top: 50%;
+				left: 6px;
+				cursor: pointer;
+				border: 2px solid #757575;
+				-moz-transform: translateY(-50%);
+				transform: translateY(-50%);
+				-moz-border-radius: 50%;
+				border-radius: 50%;
+				-moz-transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+				transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+	            will-change: border-color;
+			}
+
+				.du-dialog .dlg-select-item  .dlg-select-radio:checked + .dlg-select-lbl:before { border-color: #1e88e5; }
+
+			.du-dialog .dlg-select-item  .dlg-select-radio + .dlg-select-lbl:after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 11px;
+				width: 10px;
+				height: 10px;
+				margin-top: -5px;
+				cursor: pointer;
+				background-color: #1e88e5;
+				-moz-border-radius: 50%;
+				border-radius: 50%;
+				-moz-transition: -moz-transform .28s cubic-bezier(.4,0,.2,1);
+				transition: transform .28s cubic-bezier(.4,0,.2,1);
+				-moz-transform: scale(0);
+				transform: scale(0);
+				-moz-transform-origin: center;
+				transform-origin: center;
+	            will-change: transform, background-color;
+			}
+
+				.du-dialog .dlg-select-item .dlg-select-radio:checked + .dlg-select-lbl:after {
+					-moz-transform: scale(1);
+					transform: scale(1);
+				}
 
 	.du-dialog .dlg-actions {
 		padding: 8px;

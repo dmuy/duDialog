@@ -20,17 +20,9 @@
 })(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 	'use strict';
 
-	if (!String.prototype.removeSpace)
+	if (!String.prototype.removeSpace) {
 		String.prototype.removeSpace = function () { return this.replace(/\s+/g,'') };
-
-	var _types = {};
-	Object.defineProperties(_types, {
-		DEFAULT: { value: 1 },
-		OK_CANCEL: { value: 2 },
-		NO_ACTION: { value: 3 }
-	});
-
-	Object.defineProperty(root, 'duDlgTypes', { value: _types });
+	}
 
 	var supports = !!document.querySelector && !!root.addEventListener, // feature test
 		defaults = {
@@ -38,10 +30,11 @@
 			okText: 'Ok',			// display text for the 'OK' button
 			cancelText: 'Cancel',	// display text for the 'Cancel' button
 			selection: false,		// determines if dialog is for item selection
+			multiple: false,		// determines if multiple seletion (for selection dialog)
 			selectedValue: null,	// default selected item value (for selection dialog)
 			valueField: 'value',	// variable name for the select item value; use this for custom object structure (for selection dialog)
 			textField: 'item',		// variable name for the select item display text; use this for custom object structure (for selection dialog)
-			callbacks: null			// callback functions: okClick, cancelClick
+			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog)
 		}, duDialog = function () {
 			var _ = this, _args = arguments,
 				titleType = typeof _args[0], msgType = typeof _args[1], tType = typeof _args[2];
@@ -49,8 +42,11 @@
 			if (typeof _ === 'undefined') 
 				throw new Error('duDialog should be initialized.');
 
-			_.type = tType === 'object' ? duDlgTypes.DEFAULT : _args[2] || duDlgTypes.DEFAULT;
 			_.config = extendObj(defaults, tType === 'object' ? _args[2] : _args[3]);
+
+			var enforcedAction = (_.config.selection ? (_.config.multiple ? duDialog.OK_CANCEL : duDialog.NO_ACTION) : duDialog.DEFAULT);
+
+			_.type = tType === 'object' ? enforcedAction : _args[2] || enforcedAction;
 
 			if (titleType === 'undefined' || (titleType !== 'string' && _args[0] !== null))
 				throw new Error('Dialog title is missing or incorrect format.');
@@ -63,6 +59,21 @@
 			_.message = _args[1];
 
 			if (!_.config.init) buildUI.apply(this);
+		}, setAttributes = function(el, attrs) {
+			/* src: http://jsfiddle.net/andr3ww/pvuzgfg6/13/ */
+			var recursiveSet = function(at, set) {
+				for (var prop in at) {
+					var a = at[prop];
+					if (typeof a === 'object' && a.dataset === undefined && a[0] === undefined) { recursiveSet(a, set[prop]); }
+					else { set[prop] = a; }
+				}
+			}
+			recursiveSet(attrs, el);
+		}, inArray = function (arr, item) {
+			if (!arr) return false;
+			if (arr[0] === undefined) return false;
+
+			return arr.filter(function (x) { return x === item  }).length > 0
 		}, buildUI = function() {
 
 			if (!supports) return;
@@ -83,7 +94,7 @@
 				evtHandler = function (e) {
 					if (e.type === 'click') {
 						// handle overlay click if dialog has no action buttons
-						if (e.target.matches('.du-dialog') && _.type === duDlgTypes.NO_ACTION)
+						if (e.target.matches('.du-dialog') && _.type === duDialog.NO_ACTION)
 							_.hide();
 
 						// handle selection item click
@@ -92,11 +103,28 @@
 
 						// handle action buttons click
 						if (e.target.matches('.dlg-action')) {
+							// OK button
 							if (e.target.matches('.ok-action')) {
-								if(_callbacks && _callbacks.okClick) _callbacks.okClick.apply(_, e);
-								else _.hide();
+								if (_.config.selection && _.config.multiple) {
+									var checked = content.querySelectorAll(':scope .dlg-select-checkbox:checked'), checkedVals = [], checkedItems = [];
+
+									for (var i = 0; i < checked.length; i++) {
+										var item = checked[i].item;
+
+										checkedItems.push(item);
+										checkedVals.push(typeof item === 'string' ? checked[i].value : item[_.config.valueField]);
+									}
+
+									_.config.selectedValue = checkedVals;
+									_callbacks.itemSelect.apply({ value: checkedVals }, [e, checkedItems]);
+									_.hide();
+								} else {
+									if(_callbacks && _callbacks.okClick) _callbacks.okClick.apply(_, e);
+									else _.hide();
+								}
 							}
 
+							// CANCEL button
 							if (e.target.matches('.cancel-action')) {
 								if(_callbacks && _callbacks.cancelClick) _callbacks.cancelClick.apply(_, e);
 								else _.hide();
@@ -109,10 +137,10 @@
 						if (e.target.matches('.dlg-select-radio')) {
 							var el = e.target;
 							if (el.checked && _callbacks && _callbacks.itemSelect) {
-								_.config.selectedValue = el.value;
+								_.config.selectedValue = typeof el.item === 'string' ? el.value : el.item[_.config.valueField];
 								_callbacks.itemSelect.apply(el, [e, el.item]);
 
-								if (_.type === duDlgTypes.NO_ACTION) _.hide();
+								_.hide();
 							}
 						}
 					}
@@ -127,6 +155,7 @@
 			_.dialog = createElem('div', 'du-dialog');
 			_.docFrag.appendChild(_.dialog);
 			wrapper = createElem('div', 'dlg-wrapper');
+			wrapper.tabIndex = 0;
 			_.dialog.appendChild(wrapper);
 
 			if (_.title) {
@@ -144,16 +173,18 @@
 						iVal = iType === 'string' ? item : item[_.config.valueField],
 						iText = iType === 'string' ? item : item[_.config.textField],
 						sItem = createElem('div', 'dlg-select-item'),
-						sRadio = createElem('input', 'dlg-select-radio'),
+						sRadio = createElem('input', _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio'),
 						sLabel = createElem('label', 'dlg-select-lbl', iText),
-						itemId = 'dlg-radio' + iVal.toString().removeSpace();
+						itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + iVal.toString().removeSpace();
 
-					sRadio.type = 'radio';
-					sRadio.name = 'dlg-selection';
-					sRadio.value = iVal;
-					sRadio.id = itemId;
+					setAttributes(sRadio, {
+						id: itemId,
+						name: 'dlg-selection',
+						type: _.config.multiple ? 'checkbox' : 'radio',
+						value: iVal,
+						checked: _.config.multiple ? (_.config.selectedValue && inArray(_.config.selectedValue, iVal)) : _.config.selectedValue === iVal
+					});
 					sRadio.item = item;
-					sRadio.checked = _.config.selectedValue == iVal;
 					sLabel.htmlFor = itemId;
 					sItem.appendChild(sRadio);
 					sItem.appendChild(sLabel);
@@ -163,18 +194,27 @@
 
 			wrapper.appendChild(content);
 
-			if (_.type !== duDlgTypes.NO_ACTION) {
+			if (_.type !== duDialog.NO_ACTION) {
 				footer = createElem('div', 'dlg-actions');
 				wrapper.appendChild(footer);
 			}
 
+			/* Setup action buttons */
 			switch(_.type) {
-				case duDlgTypes.OK_CANCEL:
-					footer.appendChild(createElem('button', 'dlg-action cancel-action', _.config.cancelText));
-					footer.appendChild(createElem('button', 'dlg-action ok-action', _.config.okText));
+				case duDialog.OK_CANCEL:
+					var btnCancel = createElem('button', 'dlg-action cancel-action', _.config.cancelText),
+						btnOk = createElem('button', 'dlg-action ok-action', _.config.okText);
+
+					btnCancel.tabIndex = 2;
+					btnOk.tabIndex = 1;
+					footer.appendChild(btnCancel);
+					footer.appendChild(btnOk);
 				break;
-				case duDlgTypes.DEFAULT:
-					footer.appendChild(createElem('button', 'dlg-action ok-action', _.config.okText));
+				case duDialog.DEFAULT:
+					var btnOk = createElem('button', 'dlg-action ok-action', _.config.okText);
+
+					btnOk.tabIndex = 1;
+					footer.appendChild(btnOk);
 				break;
 			}
 
@@ -186,7 +226,13 @@
 			if (!_.config.init) _.show();
 		};
 
-	// shows dialog
+	Object.defineProperties(duDialog, {
+		DEFAULT: { value: 1 },
+		OK_CANCEL: { value: 2 },
+		NO_ACTION: { value: 3 }
+	});
+
+	/* Shows dialog */
 	duDialog.prototype.show = function() {
 		var _ = this;
 
@@ -199,10 +245,12 @@
 			var buttons = document.getElementsByClassName('dlg-action');
 			if (buttons && buttons.length)
 				buttons[buttons.length - 1].focus();
+			else
+				_.dialog.getElementsByClassName('dlg-wrapper')[0].focus();
 		}, 15);
 	}
 
-	// hides dialog
+	/* Hides dialog */
 	duDialog.prototype.hide = function() {
 		var _ = this;
 

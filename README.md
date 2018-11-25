@@ -17,9 +17,9 @@ new duDialog(
 
 Dialog action button types:
 ```javascript
-duDlgTypes.DEFAULT    // default action button (OK)
-duDlgTypes.OK_CANCEL  // OK and CANCEL buttons
-duDlgTypes.NO_ACTION  // no action button (can be used with selection dialogs)
+duDialog.DEFAULT    // default action button (OK)
+duDialog.OK_CANCEL  // OK and CANCEL buttons
+duDialog.NO_ACTION  // no action button (can be used with selection dialogs)
 ```
 
 Below is the default configuration.
@@ -29,6 +29,7 @@ Below is the default configuration.
   okText: 'Ok',         // display text for the 'OK' button
   cancelText: 'Cancel', // display text for the 'Cancel' button
   selection: false,     // determines if dialog is for item selection
+  multiple: false,      // determines if multiple seletion (for selection dialog)
   selectedValue: null,  // default selected item value (for selection dialog)
   valueField: 'value',  // variable name for the select item value; use this for custom object structure (for selection dialog)
   textField: 'item',    // variable name for the select item display text; use this for custom object structure (for selection dialog)
@@ -53,10 +54,11 @@ okClick(e);
 cancelClick(e);
 
 /* 
- * Triggers on item selection change (selection dialog); 'this' inside the callback refers to the radio button
+ * Triggers on item selection change (selection dialog); 'this' inside the callback refers to the radio button.
+ * For multiple selection dialog, this will be triggered on OK button click (okClick will not be executed); 'this' does not refer to the checkbox
  * Paramters:
- *    e - event object
- *    i - select item (string or object) bound to the radio button
+ *    e - event object; 
+ *    i - selected item (string or object) bound to the radio button; array of selected items (string or object) for multiple selection
  */
 itemSelect(e, i);
 ```
@@ -79,7 +81,7 @@ new duDialog('Title', 'This is a dialog message.');
 ```javascript
 // initializes the dialog with no title/header, and OK (display text is 'Proceed') and CANCEL buttons;
 // with a callback function on OK button click
-new duDialog(null, 'This action cannot be undone, proceed?', duDlgTypes.OK_CANCEL, { okText: 'Proceed',
+new duDialog(null, 'This action cannot be undone, proceed?', duDialog.OK_CANCEL, { okText: 'Proceed',
   callbacks: {
     okClick: function(){
       // do something
@@ -99,7 +101,7 @@ var dlg = new duDialog('Title', 'This is a dialog message.', { init: true });
 ```
 
 ### Selection Dialog
-Default item object format:
+Default item object format. When used you don't have to specify the `valueField` and `textField` configurations.
 ```javascript
 {
   item: 'Item',   // item display text
@@ -107,13 +109,14 @@ Default item object format:
 }
 ```
 
+### Single select
 On the `message` parameter, specify an array of string or object and set `selection` configuration to `true`.
 ```javascript
-new duDialog('Select fruit', ['Apple', 'Banana', 'Mango', 'Orange', 'Strawberry'], duDlgTypes.NO_ACTION, {
+new duDialog('Select fruit', ['Apple', 'Banana', 'Mango', 'Orange', 'Strawberry'], {
   selection: true, 
   callbacks: {
     // e - event
-    // i - select item
+    // i - selected item (string or object)
     itemSelect: function(e, i){
       // this.value - value of the selected item (i.e 'Apple', 'Banana', etct)
     }
@@ -123,19 +126,39 @@ new duDialog('Select fruit', ['Apple', 'Banana', 'Mango', 'Orange', 'Strawberry'
 // custom item object; default object is { item: 'Item', value: 'value' }
 new duDialog('Select fruit', 
   [{ name: 'Apple', id: 1 }, { name: 'Banana', id: 2 }, { name: 'Mango', id: 3 }, { name: 'Orange', id: 4 }, { name: 'Strawberry', id: 5 }], 
-  duDlgTypes.NO_ACTION, 
   {
     selection: true,
     textField: 'name',  // since 'item' is not in the object, specify 'name' or any varialbe in the object you want as display text
     valueField: 'id',   // since 'value' is not in the object, specify 'id' or any variable in the object you want as the value
     callbacks: {
       itemSelect: function(e, i){
-        // this.value - value of the selected item; in this case the 'id' of the fruits
+        // this.value - value of the selected item; in this case fruit 'id'
       }
     }
   });
 ```
-![alt text](https://lh3.googleusercontent.com/vz-mUJ_X2FKNZBb-rL9VBGZIg1QuIQgMWqSY6WGxTLpTkUVErhrOdVL-DBwKaxbGWNnI_tiz308OuKn6kO9LFERTo_CkusfcrUQLaYW2CrQWepnwsOLiZ02__DWtUXqfkkOHO9-yUNMwzTLzT2GY12rgu2YL41vVGa4yotEFyA_Z4V9nOXIwA2-RewoOOhtGk4y-27xiiqgkZY0k0S0nUQDeD0CYAtjqJc7yFLgK5e4RxjA4qxOVI-LsoszeWu-S4IR8obIpRSWxCNjpw1zcnT_zwyCXkLEfsl7M-mBwB19zMHj0GrLsFCZM9MZwH4aTVIetEoZQ7y4niLe901qpqETXyIUtU7i4-pxv3b9ednaB2yIVVUq1iSC8yaVdS3G369dxXx2yQUw51147hROXa9wbzeBiq-dErGhRwNF2nOGX_2CkWuMhnU3LL1BtMRqX6BcOL8158b6ENjr9dkhcnIbBOXMCEII21wyYmtitwvxwCIYAX2pWWhLXihp0uX0PWKoXvxu2fvRkGAk35XSfctNUdcVeWabRsT7Pb13VauazHsjSZgiApHMM9o7iI1evWcmXanTplIvxPlj8ZMsykvLmyoHfoI-NGgG5wu-mgs3mV_rORz5i5CfyIeAIUfzQG3qwlJn01zUN4tZT5TP258xI=w326-h374-no "Select dialog")
+![alt text](https://lh3.googleusercontent.com/GYCCbgAYrleyFewA24Nvoo8HHwVMriEi0GcMMKSaIIsP2wmy5foH4CncJb4LpU7dIfuchWvHDnRvcaicNPcnmQjGNADUiabi-IPqIJC9VJTE3HSClvE-4T77s7nnVWXQMx6zirgODClgLfGIinYfkeyMlCUjmE70G2M2VUS5c1wYdNSbtRmJuKe7UoA0gdCA95wKxJG1jTLOPJV83O4Iz1gFvD3l4e6LIekWJAKdGAKcqKwIJ9CP8tM9t4QQuFYMXRzQKmmzPOt6LBCp-pkKxw3dOVixQgZFv0iyKZhSHZnhNX6gI0xOYBawETY91mwqHihDbrdOlzXhEch-JAO-SEjQ-VQPQyh8aPhatVTsI-bO4CSD05qMnwl9Ppzm1gatcwQH7fLev-BWcesxWEDZVd9db1ZQtB9GgPHRXi9rGjxJnaq40923CN7P0zzN5mOvqsNXNzItTeFmnfXIqgqkgIyPwLZtZBz-8QNYZoBJzVgJXRMGn3fcN40FkIDanUhXQ_rQvXDkVLVJJoC9nYPCSqaU_MDi2ivsD7lY0qrya-1as0IBuAFxQiyz_VoKZMS3N7WycziluJa4TxdkgCa4iE2uokSjdRpY-BCNxUC9Bl8OXtoh-jHuTKi20ssROq2lnyzJVPerTAu2b1Fpirlovp38=w326-h371-no "Single select dialog")
+
+### Multiple select
+To enable multiple selection, set `multiple` configuration to `true`.
+```javascript
+new duDialog('Select fruits', 
+  [{ name: 'Apple', id: 1 }, { name: 'Banana', id: 2 }, { name: 'Mango', id: 3 }, { name: 'Orange', id: 4 }, { name: 'Strawberry', id: 5 }], 
+  {
+    selection: true, multiple: true,
+    textField: 'name',  // since 'item' is not in the object, specify 'name' or any varialbe in the object you want as display text
+    valueField: 'id',   // since 'value' is not in the object, specify 'id' or any variable in the object you want as the value
+    callbacks: {
+      // i - array of selected items (string or object)
+      itemSelect: function(e, i){
+        // this.value - value array of the selected items; in this case array of fruit 'id'
+      }
+    }
+  });
+```
+![alt text](https://lh3.googleusercontent.com/CbLdzgvp4qIdBHNUouhJscOPSYHJStzt2dd_VYooCh271pa6a_tErROB34XTLoFjMft9Y-jCaQB1NDfd2htWBkrOFdXk9fc-6iQDBVLSD7QsvhHdvuHuJev7pf1Lzdlh08x50yDjdZdGMGsvrPx-cliuw8Qpsc-Ui2gHbvz8M8RiIbZZKUqaqx_yu-bdVOnhYRIM_uJN3XkIPaBjScxWIoBjCyz8DrMYuKMdNZXTe64q1oVcPXRwkO7Vd-iE_EDsoPWWazDTTD5UZux7apP-SMhoAM7rE_9WUdiNVye7Jl9PNT-R6o1W112wpCp7UqWPAQfcK_w_cQVdty_mqPF5JklEluxJKVe0rlvzcOJwttiXMNYfbS7U0IAs0ZzomIua3pdbWJ4Qe6Q7b-bPJ2fkdqqnZztqzsqhvK1kpQAfK1Hr9TEIeOAZQvBLEnPtYehnjXwMGN5jXQNp0ljyczamELgO2Q1bhT9d2yH2EPDafBqBDp0qj03ch3g2zm5U_cfuq56Lfd8BkMmRHywhW6Sdd8C7FFX_nZv-UETGxGA0Tg4ZsshstUQCQC_Peh-KtThKDMm_ButlBNtNOCOUHEeGHd8hKturbXMJxJDpXneVyQeRNbQ68CUN74iTk5Drz2G0qYOTqRcsyEU_ZGt9-FCiH0M_=w338-h415-no "Multiple select dialog")
+
+**Note: Action buttons are enforced for selection dialog, you don't need to specify the dialog action buttons ('type' duDialog paramter) if `selection: true`.**
 
 
 ### Remember
