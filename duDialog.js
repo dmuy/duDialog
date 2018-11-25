@@ -64,7 +64,7 @@
 			var recursiveSet = function(at, set) {
 				for (var prop in at) {
 					var a = at[prop];
-					if (typeof a === 'object' && a.dataset === undefined && a[0] === undefined) { recursiveSet(a, set[prop]); }
+					if ((typeof a === 'object' && a !== null) && a.dataset === undefined && a[0] === undefined) { recursiveSet(a, set[prop]); }
 					else { set[prop] = a; }
 				}
 			}
