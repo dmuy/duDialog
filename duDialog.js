@@ -20,10 +20,6 @@
 })(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 	'use strict';
 
-	if (!String.prototype.removeSpace) {
-		String.prototype.removeSpace = function () { return this.replace(/\s+/g,'') };
-	}
-
 	var supports = !!document.querySelector && !!root.addEventListener, // feature test
 		defaults = {
 			init: false,			// determines if initialize only (dialog will not be shown immediately after initialization)
@@ -36,11 +32,11 @@
 			textField: 'item',		// variable name for the select item display text; use this for custom object structure (for selection dialog)
 			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog)
 		}, duDialog = function () {
-			var _ = this, _args = arguments,
-				titleType = typeof _args[0], msgType = typeof _args[1], tType = typeof _args[2];
 
-			if (typeof _ === 'undefined') 
-				throw new Error('duDialog should be initialized.');
+			if (!(this instanceof duDialog))
+				return duDialog.apply(Object.create(duDialog.prototype), arguments);
+
+			var _ = this, _args = arguments, titleType = typeof _args[0], msgType = typeof _args[1], tType = typeof _args[2];
 
 			_.config = extendObj(defaults, tType === 'object' ? _args[2] : _args[3]);
 
@@ -58,7 +54,9 @@
 			_.title = _args[0];
 			_.message = _args[1];
 
-			if (!_.config.init) buildUI.apply(this);
+			if (!_.config.init) buildUI.apply(_);
+
+			return _;
 		}, setAttributes = function(el, attrs) {
 			/* src: http://jsfiddle.net/andr3ww/pvuzgfg6/13/ */
 			var recursiveSet = function(at, set) {
@@ -69,6 +67,8 @@
 				}
 			}
 			recursiveSet(attrs, el);
+		}, removeSpace = function (str) {
+			return str.replace(/\s+/g,'');
 		}, inArray = function (arr, item) {
 			if (!arr) return false;
 			if (arr[0] === undefined) return false;
@@ -175,7 +175,7 @@
 						sItem = createElem('div', 'dlg-select-item'),
 						sRadio = createElem('input', _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio'),
 						sLabel = createElem('label', 'dlg-select-lbl', iText),
-						itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + iVal.toString().removeSpace();
+						itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(iVal.toString());
 
 					setAttributes(sRadio, {
 						id: itemId,
