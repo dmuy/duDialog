@@ -163,6 +163,20 @@ new duDialog('Select fruits',
 **Note: Action buttons are enforced for selection dialog, you don't need to specify the dialog action buttons ('type' duDialog paramter) if `selection: true`.**
 
 
+### CDN
+Use the following if you don't want to host the `js` and `css` files:
+```
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.css
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.js
+```
+Minified version:
+```
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.min.css
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.min.js
+```
+
+[Learn more about the CDN](https://www.jsdelivr.com/features#gh)
+
 ### Remember
 Comment or remove the line shown below in the css file if you already have a link to the Roboto font.
 ```css
