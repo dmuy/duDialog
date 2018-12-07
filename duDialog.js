@@ -168,7 +168,7 @@
 			content = createElem('div', 'dlg-content');
 
 			if (_.config.selection) {
-				for (var idx in _.message) {
+				for (var idx = 0; idx < _.message.length; idx++) {
 					var item = _.message[idx], iType = typeof item, 
 						iVal = iType === 'string' ? item : item[_.config.valueField],
 						iText = iType === 'string' ? item : item[_.config.textField],
