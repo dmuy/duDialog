@@ -166,13 +166,13 @@ new duDialog('Select fruits',
 ### CDN
 Use the following if you don't want to host the `js` and `css` files:
 ```
-https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.css
-https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.js
+https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.css
+https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.js
 ```
 Minified version:
 ```
-https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.min.css
-https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.0/duDialog.min.js
+https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.min.css
+https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.min.js
 ```
 
 [Learn more about the CDN](https://www.jsdelivr.com/features#gh)
