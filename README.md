@@ -21,7 +21,7 @@ Dialog action button types:
 ```javascript
 duDialog.DEFAULT    // default action button (OK)
 duDialog.OK_CANCEL  // OK and CANCEL buttons
-duDialog.NO_ACTION  // no action button (can be used with selection dialogs)
+duDialog.NO_ACTION  // no action button (used with single selection dialog)
 ```
 
 Below is the default configuration.
