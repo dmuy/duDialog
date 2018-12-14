@@ -3,7 +3,7 @@ duDialog
 
 A simple material concept dialog plugin (no jQuery required, no markup needed).
 
-**[DEMO](https://dmuy.github.io/dialog/)**
+**[DEMO](https://dmuy.github.io/duDialog/)**
 
 ## Options
 Calling `duDialog()` will return the dialog object.
