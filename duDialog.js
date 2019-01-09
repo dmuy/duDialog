@@ -277,7 +277,7 @@
 			_.dialog.classList.add('dlg--open');
 
 			// scroll to selected item (for single selection only)
-			if (!_.config.multiple && _.config.selectedValue) {
+			if (_.config.selection && !_.config.multiple) {
 				var content = _.dialog.querySelector(':scope .dlg-content'),
 					_selected = content.querySelector(':scope .dlg-select-radio:checked');
 
