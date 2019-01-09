@@ -164,7 +164,7 @@
 
 							for (var i = 0; i < _items.length; i++) {
 								var dlgItem = _items[i],
-									input = dlgItem.querySelectorAll(':scope ' + (_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio'))[0],
+									input = dlgItem.querySelector(':scope ' + (_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio')),
 									item = _.cache[input.id], iType = typeof item, iText = iType === 'string' ? item : item[_.config.textField],
 									_matched = false;
 
@@ -275,6 +275,19 @@
 		document.body.appendChild(_.docFrag);
 		setTimeout(function () {
 			_.dialog.classList.add('dlg--open');
+
+			// scroll to selected item (for single selection only)
+			if (!_.config.multiple && _.config.selectedValue) {
+				var content = _.dialog.querySelector(':scope .dlg-content'),
+					_selected = content.querySelector(':scope .dlg-select-radio:checked');
+
+				if (_selected) {
+					var _nodes = Array.prototype.slice.call(content.childNodes),
+						_offset = (_nodes.indexOf(_selected.parentNode)) * 48;
+
+					content.scrollTop = _offset;
+				}
+			}
 
 			var buttons = document.getElementsByClassName('dlg-action');
 			if (buttons && buttons.length)
