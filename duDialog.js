@@ -27,10 +27,11 @@
 			cancelText: 'Cancel',	// display text for the 'Cancel' button
 			selection: false,		// determines if dialog is for item selection
 			multiple: false,		// determines if multiple seletion (for selection dialog)
+			allowSearch: false,		// determines if search input is visible/enabled (for selection dialog)
 			selectedValue: null,	// default selected item value (for selection dialog)
 			valueField: 'value',	// variable name for the select item value; use this for custom object structure (for selection dialog)
 			textField: 'item',		// variable name for the select item display text; use this for custom object structure (for selection dialog)
-			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog)
+			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog)
 		}, duDialog = function () {
 
 			if (!(this instanceof duDialog))
@@ -53,6 +54,7 @@
 
 			_.title = _args[0];
 			_.message = _args[1];
+			_.cache = {};
 
 			if (!_.config.init) buildUI.apply(_);
 
@@ -94,8 +96,13 @@
 				evtHandler = function (e) {
 					if (e.type === 'click') {
 						// handle overlay click if dialog has no action buttons
-						if (e.target.matches('.du-dialog') && _.type === duDialog.NO_ACTION)
-							_.hide();
+						if (e.target.matches('.du-dialog')) {
+							if (_.type === duDialog.NO_ACTION) _.hide();
+							else {
+								_.dialog.classList.add('dlg--pulse');
+								setTimeout(function () { _.dialog.classList.remove('dlg--pulse') }, 200);
+							}
+						}
 
 						// handle selection item click
 						if (e.target.matches('.dlg-select-item'))
@@ -109,7 +116,7 @@
 									var checked = content.querySelectorAll(':scope .dlg-select-checkbox:checked'), checkedVals = [], checkedItems = [];
 
 									for (var i = 0; i < checked.length; i++) {
-										var item = checked[i].item;
+										var item = _.cache[checked[i].id];
 
 										checkedItems.push(item);
 										checkedVals.push(typeof item === 'string' ? checked[i].value : item[_.config.valueField]);
@@ -137,8 +144,9 @@
 						if (e.target.matches('.dlg-select-radio')) {
 							var el = e.target;
 							if (el.checked && _callbacks && _callbacks.itemSelect) {
-								_.config.selectedValue = typeof el.item === 'string' ? el.value : el.item[_.config.valueField];
-								_callbacks.itemSelect.apply(el, [e, el.item]);
+								var item = _.cache[el.id];
+								_.config.selectedValue = typeof item === 'string' ? el.value : item[_.config.valueField];
+								_callbacks.itemSelect.apply(el, [e, item]);
 
 								_.hide();
 							}
@@ -148,6 +156,24 @@
 					if (e.type === 'scroll') {
 						if (e.target.matches('.dlg-content'))
 							e.target.classList[e.target.scrollTop > 5 ? 'add' : 'remove']('content--scrolled');
+					}
+
+					if (e.type === 'keyup') {
+						if (e.target.matches('.dlg-search')) {
+							var _keyword = e.target.value, _items = content.querySelectorAll(':scope .dlg-select-item');
+
+							for (var i = 0; i < _items.length; i++) {
+								var dlgItem = _items[i],
+									input = dlgItem.querySelectorAll(':scope ' + (_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio'))[0],
+									item = _.cache[input.id], iType = typeof item, iText = iType === 'string' ? item : item[_.config.textField],
+									_matched = false;
+
+								_matched = (_callbacks && _callbacks.onSearch) ? _callbacks.onSearch.call(_, item, _keyword) :
+									iText.toLowerCase().indexOf(_keyword.toLowerCase()) >= 0;
+
+								dlgItem.classList[_matched ? 'remove' : 'add']('item--nomatch');
+							}
+						}
 					}
 				};
 
@@ -168,6 +194,12 @@
 			content = createElem('div', 'dlg-content');
 
 			if (_.config.selection) {
+				if (_.config.allowSearch) {
+					var searchEl = createElem('input', 'dlg-search');
+					searchEl.placeholder = 'Search...';
+					header.appendChild(searchEl);
+				}
+
 				for (var idx = 0; idx < _.message.length; idx++) {
 					var item = _.message[idx], iType = typeof item, 
 						iVal = iType === 'string' ? item : item[_.config.valueField],
@@ -184,7 +216,8 @@
 						value: iVal,
 						checked: _.config.multiple ? (_.config.selectedValue && inArray(_.config.selectedValue, iVal)) : _.config.selectedValue === iVal
 					});
-					sRadio.item = item;
+					
+					_.cache[itemId] = item;
 					sLabel.htmlFor = itemId;
 					sItem.appendChild(sRadio);
 					sItem.appendChild(sLabel);
@@ -222,6 +255,7 @@
 			content.addEventListener('scroll', evtHandler, false);
 			_.dialog.addEventListener('click', evtHandler, false);
 			_.dialog.addEventListener('change', evtHandler, false);
+			_.dialog.addEventListener('keyup', evtHandler, false);
 
 			if (!_.config.init) _.show();
 		};

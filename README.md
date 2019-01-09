@@ -32,10 +32,11 @@ Below is the default configuration.
   cancelText: 'Cancel', // display text for the 'Cancel' button
   selection: false,     // determines if dialog is for item selection
   multiple: false,      // determines if multiple seletion (for selection dialog)
+  allowSearch: false,   // determines if search input is visible/enabled (for selection dialog)
   selectedValue: null,  // default selected item value (for selection dialog)
   valueField: 'value',  // variable name for the select item value; use this for custom object structure (for selection dialog)
   textField: 'item',    // variable name for the select item display text; use this for custom object structure (for selection dialog)
-  callbacks: null       // callback functions: okClick, cancelClick, itemSelect (for selection dialog)
+  callbacks: null       // callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog)
 }
 ```
 
@@ -63,6 +64,15 @@ cancelClick(e);
  *    i - selected item (string or object) bound to the radio button; array of selected items (string or object) for multiple selection
  */
 itemSelect(e, i);
+
+/* 
+ * Custom search function, triggers on search input keyup (selection dialog); 'this' inside the callback refers to the dialog object.
+ * Paramters:
+ *    i - select item object or string;
+ *    k - search query string
+ * Returns: boolean (for matching item/s)
+ */
+onSearch(i, k);
 ```
 
 ## How to use

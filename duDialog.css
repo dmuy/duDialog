@@ -44,6 +44,11 @@
 		background-color: transparent;
 	}
 
+	.du-dialog.dlg--pulse {
+		-webkit-animation: dlgPulse 200ms;
+		animation: dlgPulse 200ms;
+	}
+
 	.du-dialog .dlg-wrapper {
 		position: absolute;
 	    min-width: 280px;
@@ -78,6 +83,18 @@
 	    line-height: 32px;
 	}
 
+		.du-dialog .dlg-header .dlg-search {
+			display: block;
+			font-family: inherit;
+			font-size: 16px;
+			font-weight: normal;
+			line-height: 36px;
+			margin-top: 8px;
+			width: 100%;
+			border: none;
+			outline: none;
+		}
+
 	.du-dialog .dlg-content {
 		padding: 0 24px 20px 24px;
 		color: #757575;
@@ -99,9 +116,9 @@
 			-moz-transition: background-color .2s linear;
 			transition: background-color .2s linear;
 		}
-
 			.du-dialog .dlg-select-item:hover { background-color: #f5f5f5; }
 			.du-dialog .dlg-select-item:active { background-color: #e0e0e0; }
+			.du-dialog .dlg-select-item.item--nomatch { display: none; }
 
 		.du-dialog .dlg-select-item .dlg-select-radio,
 		.du-dialog .dlg-select-item .dlg-select-checkbox {
@@ -255,4 +272,34 @@
 
 @media (min-width: 600px) {
 	.du-dialog .dlg-wrapper { max-width: 560px; }	
+}
+
+@-webkit-keyframes dlgPulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes dlgPulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
 }
