@@ -28,7 +28,7 @@ Below is the default configuration.
   selectedValue: null,  // default selected item value (for selection dialog)
   valueField: 'value',  // variable name for the select item value; use this for custom object structure (for selection dialog)
   textField: 'item',    // variable name for the select item display text; use this for custom object structure (for selection dialog)
-  callbacks: null       // callback functions: okClick, cancelClick, itemSelect (for selection dialog)
+  callbacks: null       // callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog), itemRender (for selection dialog)
 }
 ```
 
@@ -56,6 +56,24 @@ cancelClick(e);
  *    i - selected item (string or object) bound to the radio button; array of selected items (string or object) for multiple selection
  */
 itemSelect(e, i);
+
+/* 
+ * Custom search function, triggers on search input keyup (selection dialog); 'this' inside the callback refers to the dialog object.
+ * Paramters:
+ *    i - select item object or string;
+ *    k - search query string
+ * Returns: boolean (for matching item/s)
+ */
+onSearch(i, k);
+
+/* 
+ * Custom item render function; 'this' inside the callback refers to the dialog object.
+ * Note: If used, you need to add your own styling
+ * Paramters:
+ *    i - select item object or string
+ * Returns: string/html markup (to be used for rendering of the item label)
+ */
+itemRender(i);
 ```
 
 ## How to use
@@ -155,6 +173,28 @@ new duDialog('Select fruits',
 
 **Note: Action buttons are enforced for selection dialog, you don't need to specify the dialog action buttons ('type' duDialog paramter) if `selection: true`.**
 
+### Customize rendering function
+```javascript
+// assuming item source is like this: { id: 1, desc: 'Mango', caption: 'This is a juicy mango' }
+callbacks: {
+  itemRender: function(i){
+    return '<span class="fruit-name">' + i.desc + '</span><span class="fruit-caption">' + i.caption + '</span>';
+  }
+}
+```
+*Note: Should add custom css for `.fruit-name` and `.fruit-caption` to adjust the item display.*
+
+### Customize search function
+```javascript
+// assuming item source is like this: { id: 1, desc: 'Mango', caption: 'This is a juicy mango' }
+callbacks: {
+  onSearch: function(i, k){
+    var query = k.toLowerCase();
+    // search items thru 'desc' and 'caption'
+    return i.desc.toLowerCase().indexOf(query) >= 0 || i.caption.toLowerCase().indexOf(query) >= 0;
+  }
+}
+```
 
 ### CDN
 Use the following if you don't want to host the `js` and `css` files:
