@@ -111,7 +111,6 @@
 			position: relative;
 			margin: 0 -24px;
 			padding: 0 24px;
-			line-height: 48px;
 			cursor: pointer;
 			-moz-transition: background-color .2s linear;
 			transition: background-color .2s linear;
@@ -132,12 +131,16 @@
 		.du-dialog .dlg-select-item .dlg-select-lbl {
 			position: relative;
 			display: inline-block;
-			line-height: 36px;
 			padding-left: 32px;
 			margin: 0;
 			cursor: pointer;
 			text-indent: 8px;
 		}
+
+			.du-dialog .dlg-select-item .dlg-select-lbl .select-item {
+				display: block;
+				line-height: 48px;
+			}
 
 			.du-dialog .dlg-select-item  .dlg-select-checkbox + .dlg-select-lbl:before {
 				content: '';

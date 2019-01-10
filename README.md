@@ -36,7 +36,7 @@ Below is the default configuration.
   selectedValue: null,  // default selected item value (for selection dialog)
   valueField: 'value',  // variable name for the select item value; use this for custom object structure (for selection dialog)
   textField: 'item',    // variable name for the select item display text; use this for custom object structure (for selection dialog)
-  callbacks: null       // callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog)
+  callbacks: null       // callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog), itemRender (for selection dialog)
 }
 ```
 
@@ -73,6 +73,15 @@ itemSelect(e, i);
  * Returns: boolean (for matching item/s)
  */
 onSearch(i, k);
+
+/* 
+ * Custom item render function; 'this' inside the callback refers to the dialog object.
+ * Note: If used, you need to add your own styling
+ * Paramters:
+ *    i - select item object or string
+ * Returns: string/html markup (to be used for rendering of the item label)
+ */
+itemRender(i);
 ```
 
 ## How to use

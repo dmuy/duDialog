@@ -31,7 +31,7 @@
 			selectedValue: null,	// default selected item value (for selection dialog)
 			valueField: 'value',	// variable name for the select item value; use this for custom object structure (for selection dialog)
 			textField: 'item',		// variable name for the select item display text; use this for custom object structure (for selection dialog)
-			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog)
+			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog), itemRender (for selection dialog)
 		}, duDialog = function () {
 
 			if (!(this instanceof duDialog))
@@ -206,7 +206,7 @@
 						iText = iType === 'string' ? item : item[_.config.textField],
 						sItem = createElem('div', 'dlg-select-item'),
 						sRadio = createElem('input', _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio'),
-						sLabel = createElem('label', 'dlg-select-lbl', iText),
+						sLabel = createElem('label', 'dlg-select-lbl', (_callbacks && _callbacks.itemRender ? _callbacks.itemRender.call(_, item) : '<span class="select-item">' + iText + '</span>'), true),
 						itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(iVal.toString());
 
 					setAttributes(sRadio, {
@@ -282,8 +282,13 @@
 					_selected = content.querySelector(':scope .dlg-select-radio:checked');
 
 				if (_selected) {
-					var _nodes = Array.prototype.slice.call(content.childNodes),
-						_offset = (_nodes.indexOf(_selected.parentNode)) * 48;
+					var _nodes = Array.prototype.slice.call(content.childNodes), _offset = 0;
+
+					for (var i = 0; i < _nodes.indexOf(_selected.parentNode); i++) {
+						var ch = _nodes[i].offsetHeight;
+
+						_offset += ch;
+					}
 
 					content.scrollTop = _offset;
 				}
