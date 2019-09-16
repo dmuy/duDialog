@@ -22,6 +22,7 @@
 
 	var supports = !!document.querySelector && !!root.addEventListener, // feature test
 		defaults = {
+			id: null,				// id attribute of the dialog container
 			init: false,			// determines if initialize only (dialog will not be shown immediately after initialization)
 			okText: 'Ok',			// display text for the 'OK' button
 			cancelText: 'Cancel',	// display text for the 'Cancel' button
@@ -32,6 +33,45 @@
 			valueField: 'value',	// variable name for the select item value; use this for custom object structure (for selection dialog)
 			textField: 'item',		// variable name for the select item display text; use this for custom object structure (for selection dialog)
 			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog), itemRender (for selection dialog)
+		},
+		/*
+		* Vanilla JavaScript version of jQuery.extend()
+		* src: https://gomakethings.com/vanilla-javascript-version-of-jquery-extend/
+		*/
+		extendObj = function () {
+			// Variables
+	        var extended = {};
+	        var deep = false;
+	        var i = 0;
+	        var length = arguments.length;
+
+	        // Check if a deep merge
+	        if (Object.prototype.toString.call(arguments[0]) === '[object Boolean]') {
+	            deep = arguments[0];
+	            i++;
+	        }
+
+	        // Merge the object into the extended object
+	        var merge = function (obj) {
+	            for (var prop in obj) {
+	                if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+	                    // If deep merge and property is an object, merge properties
+	                    if (deep && Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+	                        extended[prop] = extendObj(true, extended[prop], obj[prop]);
+	                    } else {
+	                        extended[prop] = obj[prop];
+	                    }
+	                }
+	            }
+	        };
+
+	        // Loop through each object and conduct a merge
+	        for (; i < length; i++) {
+	            var obj = arguments[i];
+	            merge(obj);
+	        }
+
+	        return extended;
 		}, duDialog = function () {
 
 			if (!(this instanceof duDialog))
@@ -61,13 +101,22 @@
 			return _;
 		}, setAttributes = function(el, attrs) {
 			/* src: http://jsfiddle.net/andr3ww/pvuzgfg6/13/ */
-			var recursiveSet = function(at, set) {
-				for (var prop in at) {
-					var a = at[prop];
-					if ((typeof a === 'object' && a !== null) && a.dataset === undefined && a[0] === undefined) { recursiveSet(a, set[prop]); }
-					else { set[prop] = a; }
-				}
-			}
+			var recursiveSet = function (at, set) {
+                for (var prop in at) {
+                    var a = at[prop];
+                    if ((typeof a === 'object' && a !== null) && a.dataset === undefined && a[0] === undefined) { recursiveSet(a, set[prop]); }
+                    else {
+                        if (prop in set)
+                             if (a !== null) set[prop] = a;
+                        else {
+                        	 if (a !== null)
+                            	set.setAttribute(prop, a);
+                            else
+                            	set.removeAttribute(prop);
+                        }
+                    }
+                }
+            }
 			recursiveSet(attrs, el);
 		}, removeSpace = function (str) {
 			return str.replace(/\s+/g,'');
@@ -76,22 +125,44 @@
 			if (arr[0] === undefined) return false;
 
 			return arr.filter(function (x) { return x === item  }).length > 0
-		}, buildUI = function() {
+		}, addEventToElem = function (elem, event, handler) {
+            if (Array.isArray(elem)) {
+                elem.forEach(function (el) {
+                    el.addEventListener(event, handler, false);
+                });
+            } else {
+                elem.addEventListener(event, handler, false);
+            }
+        }, addEventsToElem = function (el, events, handler) {
+            events.forEach(function (evt) {
+                el.addEventListener(evt, handler, false);
+            });
+        }, appendTo = function (elem, to) {
+            if (Array.isArray(elem)) {
+                elem.forEach(function (el) {
+                    to.appendChild(el);
+                });
+            } else {
+                to.appendChild(elem);
+            }
+        }, buildUI = function() {
 
 			if (!supports) return;
 
 			var _ = this, _callbacks = _.config.callbacks, wrapper, header, content, footer,
 				// createElement helper
-				createElem = function(tag, className, content, isHtml) {
-					var el = document.createElement(tag);
+				createElem = function (tag, attributes, content, isHtml) {
+		            // createElement helper
+		            var el = document.createElement(tag);
 
-					el.className = className;
-					
-					if (typeof content !== 'undefined')
-						el[isHtml || false ? 'innerHTML' : 'innerText'] = content;
+		            if (typeof content !== 'undefined')
+		                el[isHtml || false ? 'innerHTML' : 'innerText'] = content;
 
-					return el;
-				},
+		            if (typeof attributes !== 'undefined')
+		                setAttributes(el, attributes);
+
+		            return el;
+		        },
 				// global event handler
 				evtHandler = function (e) {
 					if (e.type === 'click') {
@@ -178,84 +249,75 @@
 				};
 
 			_.docFrag = document.createDocumentFragment();
-			_.dialog = createElem('div', 'du-dialog');
-			_.docFrag.appendChild(_.dialog);
-			wrapper = createElem('div', 'dlg-wrapper');
-			wrapper.tabIndex = 0;
-			_.dialog.appendChild(wrapper);
+			_.dialog = createElem('div', { className: 'du-dialog', id: _.config.id });
+
+			appendTo(_.dialog, _.docFrag);
+			
+			wrapper = createElem('div', { className: 'dlg-wrapper', tabIndex: 0 });
+
+			appendTo(wrapper, _.dialog);
 
 			if (_.title) {
-				header = createElem('div', 'dlg-header', _.title);
-				wrapper.appendChild(header);
+				header = createElem('div', { className: 'dlg-header' }, _.title);
+
+				appendTo(header, wrapper);
 			} else {
 				_.dialog.classList.add('dlg--no-title');
 			}
 
-			content = createElem('div', 'dlg-content');
+			content = createElem('div', { className: 'dlg-content' });
 
 			if (_.config.selection) {
 				if (_.config.allowSearch) {
-					var searchEl = createElem('input', 'dlg-search');
-					searchEl.placeholder = 'Search...';
-					header.appendChild(searchEl);
+					appendTo(createElem('input', { className: 'dlg-search', placeholder: 'Search...' }), header);
 				}
 
 				for (var idx = 0; idx < _.message.length; idx++) {
 					var item = _.message[idx], iType = typeof item, 
 						iVal = iType === 'string' ? item : item[_.config.valueField],
 						iText = iType === 'string' ? item : item[_.config.textField],
-						sItem = createElem('div', 'dlg-select-item'),
-						sRadio = createElem('input', _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio'),
-						sLabel = createElem('label', 'dlg-select-lbl', (_callbacks && _callbacks.itemRender ? _callbacks.itemRender.call(_, item) : '<span class="select-item">' + iText + '</span>'), true),
-						itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(iVal.toString());
-
-					setAttributes(sRadio, {
-						id: itemId,
-						name: 'dlg-selection',
-						type: _.config.multiple ? 'checkbox' : 'radio',
-						value: iVal,
-						checked: _.config.multiple ? (_.config.selectedValue && inArray(_.config.selectedValue, iVal)) : _.config.selectedValue === iVal
-					});
+						itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(iVal.toString()),
+						sItem = createElem('div', { className: 'dlg-select-item' }),
+						sRadio = createElem('input', { 
+							className: _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio',
+							id: itemId,
+							name: 'dlg-selection',
+							type: _.config.multiple ? 'checkbox' : 'radio',
+							value: iVal,
+							checked: _.config.multiple ? (_.config.selectedValue && inArray(_.config.selectedValue, iVal)) : _.config.selectedValue === iVal
+						}),
+						sLabel = createElem('label', { 
+							className: 'dlg-select-lbl', htmlFor: itemId
+						}, (_callbacks && _callbacks.itemRender ? _callbacks.itemRender.call(_, item) : '<span class="select-item">' + iText + '</span>'), true);
 					
 					_.cache[itemId] = item;
-					sLabel.htmlFor = itemId;
-					sItem.appendChild(sRadio);
-					sItem.appendChild(sLabel);
-					content.appendChild(sItem);
+					appendTo([sRadio, sLabel], sItem);
+					appendTo(sItem, content);
 				}
 			} else content.innerHTML = _.message;
 
-			wrapper.appendChild(content);
+			appendTo(content, wrapper);
 
 			if (_.type !== duDialog.NO_ACTION) {
-				footer = createElem('div', 'dlg-actions');
-				wrapper.appendChild(footer);
+				footer = createElem('div', { className: 'dlg-actions' });
+				appendTo(footer, wrapper);
 			}
 
 			/* Setup action buttons */
 			switch(_.type) {
 				case duDialog.OK_CANCEL:
-					var btnCancel = createElem('button', 'dlg-action cancel-action', _.config.cancelText),
-						btnOk = createElem('button', 'dlg-action ok-action', _.config.okText);
-
-					btnCancel.tabIndex = 2;
-					btnOk.tabIndex = 1;
-					footer.appendChild(btnCancel);
-					footer.appendChild(btnOk);
+					appendTo([createElem('button', { className: 'dlg-action cancel-action', tabIndex: 2 }, _.config.cancelText), 
+						createElem('button', {  className: 'dlg-action ok-action', tabIndex: 1 }, _.config.okText)
+						], footer);
 				break;
 				case duDialog.DEFAULT:
-					var btnOk = createElem('button', 'dlg-action ok-action', _.config.okText);
-
-					btnOk.tabIndex = 1;
-					footer.appendChild(btnOk);
+					appendTo(createElem('button', { className: 'dlg-action ok-action', tabIndex: 1 }, _.config.okText), footer);
 				break;
 			}
 
 			/* Register event handler */
-			content.addEventListener('scroll', evtHandler, false);
-			_.dialog.addEventListener('click', evtHandler, false);
-			_.dialog.addEventListener('change', evtHandler, false);
-			_.dialog.addEventListener('keyup', evtHandler, false);
+			addEventToElem(content, 'scroll', evtHandler);
+			addEventsToElem(_.dialog, ['click', 'change', 'keyup'], evtHandler);
 
 			if (!_.config.init) _.show();
 		};
@@ -272,7 +334,7 @@
 
 		if (_.config.init) buildUI.apply(this);
 
-		document.body.appendChild(_.docFrag);
+		appendTo(_.docFrag, document.body);
 		setTimeout(function () {
 			_.dialog.classList.add('dlg--open');
 
@@ -310,46 +372,6 @@
 		setTimeout(function () {
 			document.body.removeChild(_.dialog);
 		}, 200);
-	}
-
-	/*
-	* Vanilla JavaScript version of jQuery.extend()
-	* src: https://gomakethings.com/vanilla-javascript-version-of-jquery-extend/
-	*/
-	function extendObj() {
-		// Variables
-		var extended = {};
-		var deep = false;
-		var i = 0;
-		var length = arguments.length;
-
-		// Check if a deep merge
-		if ( Object.prototype.toString.call( arguments[0] ) === '[object Boolean]' ) {
-			deep = arguments[0];
-			i++;
-		}
-
-		// Merge the object into the extended object
-		var merge = function (obj) {
-			for ( var prop in obj ) {
-				if ( Object.prototype.hasOwnProperty.call( obj, prop ) ) {
-					// If deep merge and property is an object, merge properties
-					if ( deep && Object.prototype.toString.call(obj[prop]) === '[object Object]' ) {
-						extended[prop] = extend( true, extended[prop], obj[prop] );
-					} else {
-						extended[prop] = obj[prop];
-					}
-				}
-			}
-		};
-
-		// Loop through each object and conduct a merge
-		for ( ; i < length; i++ ) {
-			var obj = arguments[i];
-			merge(obj);
-		}
-
-		return extended;
 	}
 
 	return duDialog;
