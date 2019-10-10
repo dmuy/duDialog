@@ -27,6 +27,7 @@ duDialog.NO_ACTION  // no action button (used with single selection dialog)
 Below is the default configuration.
 ```javascript
 {
+  id: null,             // id attribute of the dialog container (for specific dialog styling convenience)
   init: false,          // determines if initialize only (dialog will not be shown immediately after initialization)
   okText: 'Ok',         // display text for the 'OK' button
   cancelText: 'Cancel', // display text for the 'Cancel' button

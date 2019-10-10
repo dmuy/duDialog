@@ -22,7 +22,7 @@
 
 	var supports = !!document.querySelector && !!root.addEventListener, // feature test
 		defaults = {
-			id: null,				// id attribute of the dialog container
+			id: null,				// id attribute of the dialog container (for specific dialog styling convenience)
 			init: false,			// determines if initialize only (dialog will not be shown immediately after initialization)
 			okText: 'Ok',			// display text for the 'OK' button
 			cancelText: 'Cancel',	// display text for the 'Cancel' button
@@ -184,7 +184,7 @@
 							// OK button
 							if (e.target.matches('.ok-action')) {
 								if (_.config.selection && _.config.multiple) {
-									var checked = content.querySelectorAll(':scope .dlg-select-checkbox:checked'), checkedVals = [], checkedItems = [];
+									var checked = content.querySelectorAll('.dlg-select-checkbox:checked'), checkedVals = [], checkedItems = [];
 
 									for (var i = 0; i < checked.length; i++) {
 										var item = _.cache[checked[i].id];
@@ -231,11 +231,11 @@
 
 					if (e.type === 'keyup') {
 						if (e.target.matches('.dlg-search')) {
-							var _keyword = e.target.value, _items = content.querySelectorAll(':scope .dlg-select-item');
+							var _keyword = e.target.value, _items = content.querySelectorAll('.dlg-select-item');
 
 							for (var i = 0; i < _items.length; i++) {
 								var dlgItem = _items[i],
-									input = dlgItem.querySelector(':scope ' + (_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio')),
+									input = dlgItem.querySelector((_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio')),
 									item = _.cache[input.id], iType = typeof item, iText = iType === 'string' ? item : item[_.config.textField],
 									_matched = false;
 
@@ -340,8 +340,8 @@
 
 			// scroll to selected item (for single selection only)
 			if (_.config.selection && !_.config.multiple) {
-				var content = _.dialog.querySelector(':scope .dlg-content'),
-					_selected = content.querySelector(':scope .dlg-select-radio:checked');
+				var content = _.dialog.querySelector('.dlg-content'),
+					_selected = content.querySelector('.dlg-select-radio:checked');
 
 				if (_selected) {
 					var _nodes = Array.prototype.slice.call(content.childNodes), _offset = 0;
@@ -376,3 +376,20 @@
 
 	return duDialog;
 });
+
+/* Polyfills for unsupported methods/functions */
+
+if (!Element.prototype.matches) {
+  Element.prototype.matches = 
+      Element.prototype.matchesSelector || 
+      Element.prototype.mozMatchesSelector ||
+      Element.prototype.msMatchesSelector || 
+      Element.prototype.oMatchesSelector || 
+      Element.prototype.webkitMatchesSelector ||
+      function(s) {
+        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+            i = matches.length;
+        while (--i >= 0 && matches.item(i) !== this) {}
+        return i > -1;            
+      };
+}

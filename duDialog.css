@@ -28,8 +28,7 @@
     -moz-transition: background-color .2s linear, opacity .2s ease;
     transition: background-color .2s linear, opacity .2s ease;
     will-change: background-color, visibility, opacity;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 	z-index: 999999;
 }
 
@@ -50,7 +49,6 @@
 	}
 
 	.du-dialog .dlg-wrapper {
-		position: absolute;
 	    min-width: 280px;
 	    max-width: 90%;
 	    max-height: 90%;
@@ -69,6 +67,7 @@
 	    transition: transform .18s cubic-bezier(.4,0,.2,1);
 		-moz-box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
 		box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+		overflow: hidden;
 	}
 		.du-dialog.dlg--open .dlg-wrapper {
 		    -moz-transform: scale(1);
@@ -89,6 +88,7 @@
 			font-size: 16px;
 			font-weight: normal;
 			line-height: 36px;
+			height: 36px;
 			margin-top: 8px;
 			width: 100%;
 			border: none;
@@ -101,6 +101,7 @@
 		font-size: 16px;
 		line-height: 24px;
 		letter-spacing: 0.03em;
+		border-top: 1px solid transparent;
 		overflow-x: hidden;
 		overflow-y: auto;
 	}
