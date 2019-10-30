@@ -89,7 +89,7 @@ To create a dialog, just call `duDialog()`:
 // initializes the dialog with default options (and default action button - OK button)
 new duDialog('Title', 'This is a dialog message.');
 ```
-![alt text](https://lh3.googleusercontent.com/pzN64pN35nP2ESQUy4QI5kUWrEIq4sM5wryLjb63iWa_LEuTqRiosOlNEzTUJPgCzjDtWIuzRzWFr1MeMARLOUwfDSV20JDh9YwRLzn97-BzvvHBvvhTX7X8o2VOdqVCTB0-S-Jm2tlu8HZu1xuh-C9o94AzSkSwqGEQerwrBCr0640LEOMzSuLOawhhVFDwuG5xiWXOSitYIHl8eRiqP4ypP5wMwzfXUIuYzWNxMC2ksmyuAN0_tSPLJU8iuEUVFKcEqB9MavUx_yXJxXhlD4l1CNef2tmdEAvm8Dw_XgtxcHB16zCLWIspNmG1a5Qp_0DVnYr22g_g-Dbm8VTtmw3dpX66VYAckKpYaVXEP44WYyWIPNcv0nZtKVjJ7Mvznuswzp5YoCUXGZewPHJKK1-fU2BistMjMQydBQbbLUTPLsk6OfveAJfN_7GpcTjfCy1yoYL02lc30SOeoqdk3XRn_gnfH9Q7s8ybFf8ARDzky4CxqEy9OMjRZ4A5qyHkYeEZFobryqWrUYpQTHe9V844WoAeNWoNKWF7etALtr9RalEj5DOaQlAjpuBLOEk3vdukFONE9ZvaBFnD-bNKDFY1nw55B0vzZr0XkmhOBcqVceBKIhOGbqywdHjwTR6amp2UMaTJ-uqluEydcJXXrgps=w322-h209-no "Information dialog")
+![alt text](https://i.imgur.com/BRqZqUD.png "Information dialog")
 
 ```javascript
 // initializes the dialog with no title/header, and OK (display text is 'Proceed') and CANCEL buttons;
@@ -103,7 +103,7 @@ new duDialog(null, 'This action cannot be undone, proceed?', duDialog.OK_CANCEL,
   }
 });
 ```
-![alt text](https://lh3.googleusercontent.com/EFHvfdpnrXFCq-xp0zmutv-0DMJkBzbenqRez_YcabsGND-WtWatNOr0PXj4DB7dq3wxwYBXI4qeT6XjRhB1PAlwZrwaA-hVf2nMATCXyC71FWOpj72AlNVrjWOSFhZdRfq9HLUyOrrS1AC6OB9IEeJpjh-zRuLuCOIi_QnIod3PcbzzZb8Qq1TEWsjJxmX4p0KfwhA1RqWLWLdLexIsUrQzpsDm65Riqoisz5DQcShA8qbcgwpiAMgs3RBFz8aHMpbt4K768FdBImA6BQcCsfGfnHp8olCLXX2qPvpkSF6c3IZr_5ZY-iB2nseB0R6PCJrZpxZZAv1wjU6UXMViBvYOszf_QUg0Ro9kCzkdMDzrKpBJRByewST9R5g1zSlgnTPrzKDrm_13zZGo02Zzq26KMmWhJOvRkwwAxXMxv46o_OGSgSs872TBbhv3pldK-XYqrETd5XJN89YIlPxaSxbtgGt0DDLtR6k737sjXeZdmZ31WIjx7Ip0sQdebOPZXw6kAFlG-OqdZ8w6VEjABgwR8TDiedNn94WNBy_lWqc0VK_wy3WK67cb0rEygHM0bt0IqMH2Xr_H1WbDhHIfy1KtxLGeNAKyHFsgnrlRAxR9kfslo_kyjt516WVdEFtbf9y1jqx-uegC69WCYDkdA-Gf=w399-h165-no "Confirmation dialog")
+![alt text](https://i.imgur.com/b0jmCzy.png "Confirmation dialog")
 
 You can combine different configurations to get what you need for a dialog.
 ```javascript
@@ -150,7 +150,7 @@ new duDialog('Select fruit',
     }
   });
 ```
-![alt text](https://lh3.googleusercontent.com/GYCCbgAYrleyFewA24Nvoo8HHwVMriEi0GcMMKSaIIsP2wmy5foH4CncJb4LpU7dIfuchWvHDnRvcaicNPcnmQjGNADUiabi-IPqIJC9VJTE3HSClvE-4T77s7nnVWXQMx6zirgODClgLfGIinYfkeyMlCUjmE70G2M2VUS5c1wYdNSbtRmJuKe7UoA0gdCA95wKxJG1jTLOPJV83O4Iz1gFvD3l4e6LIekWJAKdGAKcqKwIJ9CP8tM9t4QQuFYMXRzQKmmzPOt6LBCp-pkKxw3dOVixQgZFv0iyKZhSHZnhNX6gI0xOYBawETY91mwqHihDbrdOlzXhEch-JAO-SEjQ-VQPQyh8aPhatVTsI-bO4CSD05qMnwl9Ppzm1gatcwQH7fLev-BWcesxWEDZVd9db1ZQtB9GgPHRXi9rGjxJnaq40923CN7P0zzN5mOvqsNXNzItTeFmnfXIqgqkgIyPwLZtZBz-8QNYZoBJzVgJXRMGn3fcN40FkIDanUhXQ_rQvXDkVLVJJoC9nYPCSqaU_MDi2ivsD7lY0qrya-1as0IBuAFxQiyz_VoKZMS3N7WycziluJa4TxdkgCa4iE2uokSjdRpY-BCNxUC9Bl8OXtoh-jHuTKi20ssROq2lnyzJVPerTAu2b1Fpirlovp38=w326-h371-no "Single select dialog")
+![alt text](https://i.imgur.com/fEgkxNW.png "Single select dialog")
 
 ### Multiple select
 To enable multiple selection, set `multiple` configuration to `true`.
@@ -169,7 +169,7 @@ new duDialog('Select fruits',
     }
   });
 ```
-![alt text](https://lh3.googleusercontent.com/0YYBVsrz0lIhfsbCemVtVPI6JZx1Mk-8JOhC6esVp9bLx2YE0ZrsNj4sXsV-_3QtQvJyehEWGh0Iwm4INuSisbd_QDpfYW0XUfHAeAb_p7B6n2va3Smkcd-xfPEe_3On-LX0hhpntIXae5XWPUPs5m4VqUm2mFwVX9dN67nhP1kpma22szWHjYBkiHgp8Bwa816eBMBGNo-QtTE8TuGXzm3HFVdc9Esqm-OKZfZ1eoWJkIib0RhmNkc7uirRb8qBdDl_wxXgr5M_CJMXkWkva_MmROuKcquEZ2vG8lYaGThqd6RsNNxCloC0jhSXYVKVtFCMPgi49vMg3fINi0HGuwhuA-lXMVC9wQLTgwuMrTNRhbT9kltM2ldKDjmNS-EiyJQ2fW8Lw5RcFnzzzXhut9nIbj1W6YxnYvWaZTnF4s-sHxhRN_z7RxrhKxOqt9gTIrbIs8T9Ei0kCdHVefWkpJPP7goo6wCD9TEehdXwsbWRuUCDN7szdj47vsnEZdDBE7LW1PjYev5zB6J_g34dsHCK2dmfVk1KnBz530aQGnNh8_zvk3DOvvOYI9YRZ3AE-IbTQmX0yrXpRYtKLYCjBgJi4aB2IIc1HwcyQwPabcleg4nITJXLQAw_RyoA4HdnGvZIWe4w4b2o4oA-F1bGJqEh=w338-h415-no "Multiple select dialog")
+![alt text](https://i.imgur.com/LR1Zffx.png "Multiple select dialog")
 
 **Note: Action buttons are enforced for selection dialog, you don't need to specify the dialog action buttons ('type' duDialog paramter) if `selection: true`.**
 
