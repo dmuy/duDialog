@@ -3,7 +3,7 @@ title: dmuy - duDialog
 layout: default
 ---
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.1.1-rc/duDialog.min.css">
 <style type="text/css">
     .btn { margin-bottom: 8px; }
     .btn + .btn { margin-left: 8px;  }
@@ -20,9 +20,9 @@ layout: default
 {{ docu_file | markdownify }}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.1.1-rc/duDialog.min.js"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function(){
     function logger(msg) { $('#logger').html(msg) }
     
     var dlg = new duDialog('Title', 'Dialog message', { init: true }),

@@ -1,3 +1,39 @@
+## Installation
+### NPM
+Install via npm:
+```
+npm i @dmuy/dialog
+```
+
+Include in your app
+```javascript
+import '@dmuy/dialog/duDialog.css'
+import duDialog from '@dmuy/dialog'
+```
+
+### CDN
+Use the following if you don't want to host the `js` and `css` files:
+```
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@{version}/duDialog.css
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@{version}/duDialog.js
+```
+Minified version:
+```
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@{version}/duDialog.min.css
+https://cdn.jsdelivr.net/gh/dmuy/duDialog@{version}/duDialog.min.js
+```
+***Note: Replace `{version}` with the version you want to use.***
+
+[Learn more about the CDN](https://www.jsdelivr.com/features#gh)
+
+### Local Copy
+Copy `duDialog.css` and `duDialog.js` and include in your app:
+```html
+<link rel="stylesheet" type="text/css" href="{path-to}/duDialog.css">
+<script type="text/javascript" src="{path-to}/duDialog.js"></script>
+```
+***Note: Replace `{path-to}` with the absolute or relative path to where you copied the css and js files.***
+
 ## Options
 Calling `duDialog()` will return the dialog object.
 Dialog constructor:
@@ -20,11 +56,13 @@ duDialog.NO_ACTION  // no action button (used with single selection dialog)
 Below is the default configuration.
 ```javascript
 {
+  id: null,             // id attribute of the dialog container (for specific dialog styling convenience)
   init: false,          // determines if initialize only (dialog will not be shown immediately after initialization)
   okText: 'Ok',         // display text for the 'OK' button
   cancelText: 'Cancel', // display text for the 'Cancel' button
   selection: false,     // determines if dialog is for item selection
   multiple: false,      // determines if multiple seletion (for selection dialog)
+  allowSearch: false,   // determines if search input is visible/enabled (for selection dialog)
   selectedValue: null,  // default selected item value (for selection dialog)
   valueField: 'value',  // variable name for the select item value; use this for custom object structure (for selection dialog)
   textField: 'item',    // variable name for the select item display text; use this for custom object structure (for selection dialog)
@@ -76,14 +114,7 @@ onSearch(i, k);
 itemRender(i);
 ```
 
-## How to use
-Make sure you include the library first.
-Include `duDialog.css` and `duDialog.js` in your html file:
-```html
-<link rel="stylesheet" type="text/css" href="duDialog.css">
-<script type="text/javascript" src="duDialog.js"></script>
-```
-
+## Usage
 To create a dialog, just call `duDialog()`:
 ```javascript
 // initializes the dialog with default options (and default action button - OK button)
@@ -195,20 +226,6 @@ callbacks: {
   }
 }
 ```
-
-### CDN
-Use the following if you don't want to host the `js` and `css` files:
-```
-https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.css
-https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.js
-```
-Minified version:
-```
-https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.min.css
-https://cdn.jsdelivr.net/gh/dmuy/duDialog/duDialog.min.js
-```
-
-[Learn more about the CDN](https://www.jsdelivr.com/features#gh)
 
 ### Remember
 Comment or remove the line shown below in the css file if you already have a link to the Roboto font.
