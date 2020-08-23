@@ -1,5 +1,5 @@
 /* !Don't remove this!
- * duDialog v1.0 plugin
+ * duDialog v1.1 plugin
  * https://github.com/dmuy/duDialog
  *
  * Author: Dionlee Uy
@@ -7,15 +7,14 @@
  */
 
 (function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD
+	if(typeof exports === 'object' && typeof module === 'object') {
+		module.exports = factory(root);
+	} else if (typeof define === 'function' && define.amd) {
 		define('duDialog', [], factory(root));
 	} else if (typeof exports === 'object') {
-		// CommonJS
-		module.exports = factory(root);
+		exports['duDialog'] = factory(root);
 	} else {
-		// Browser globals
-		root.duDialog = factory(root);
+		root['duDialog'] = factory(root);
 	}
 })(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 	'use strict';
@@ -34,10 +33,10 @@
 			textField: 'item',		// variable name for the select item display text; use this for custom object structure (for selection dialog)
 			callbacks: null			// callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog), itemRender (for selection dialog)
 		},
-		/*
-		* Vanilla JavaScript version of jQuery.extend()
-		* src: https://gomakethings.com/vanilla-javascript-version-of-jquery-extend/
-		*/
+		/**
+		 * Vanilla JavaScript version of jQuery.extend()
+		 * src: https://gomakethings.com/vanilla-javascript-version-of-jquery-extend/
+		 */
 		extendObj = function () {
 			// Variables
 	        var extended = {};
@@ -328,7 +327,9 @@
 		NO_ACTION: { value: 3 }
 	});
 
-	/* Shows dialog */
+	/**
+	 * Shows the dialog
+	 */
 	duDialog.prototype.show = function() {
 		var _ = this;
 
@@ -364,7 +365,9 @@
 		}, 15);
 	}
 
-	/* Hides dialog */
+	/**
+	 * Hides the dialog
+	 */
 	duDialog.prototype.hide = function() {
 		var _ = this;
 

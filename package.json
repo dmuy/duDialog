@@ -1,0 +1,20 @@
+{
+    "name": "@dmuy/dialog",
+    "version": "1.1.1-rc",
+    "description": "A simple material concept dialog plugin",
+    "keywords": [
+        "dialog", "material-dialog", "selection-dialog", "dialog-plugin", "multi-select-dialog"
+    ],
+    "license": "MIT",
+    "author": {
+        "name": "Dionlee Uy",
+        "email": "dionleeuy@gmail.com"
+    },
+    "repository": "git://github.com/dmuy/duDialog.git",
+    "homepage": "https://dmuy.github.io/duDialog/",
+    "main": "duDialog.js",
+    "files": [
+        "duDialog.js",
+        "duDialog.css"
+    ]
+}
