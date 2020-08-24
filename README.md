@@ -4,6 +4,7 @@ duDialog
 A simple material concept dialog plugin (no jQuery required, no markup needed).
 
 **[DEMO](https://dmuy.github.io/duDialog/)**
+
 ## Installation
 ### NPM
 Install via npm:
@@ -32,7 +33,7 @@ https://cdn.jsdelivr.net/gh/dmuy/duDialog@{version}/duDialog.min.js
 
 [Learn more about the CDN](https://www.jsdelivr.com/features#gh)
 
-### Local Copy
+### Self Hosting
 Copy `duDialog.css` and `duDialog.js` and include in your app:
 ```html
 <link rel="stylesheet" type="text/css" href="{path-to}/duDialog.css">
@@ -64,6 +65,7 @@ Below is the default configuration.
 {
   id: null,             // id attribute of the dialog container (for specific dialog styling convenience)
   init: false,          // determines if initialize only (dialog will not be shown immediately after initialization)
+  dark: false,          // determines if dark theme is on
   okText: 'Ok',         // display text for the 'OK' button
   cancelText: 'Cancel', // display text for the 'Cancel' button
   selection: false,     // determines if dialog is for item selection
@@ -141,6 +143,7 @@ new duDialog(null, 'This action cannot be undone, proceed?', duDialog.OK_CANCEL,
 });
 ```
 ![alt text](https://i.imgur.com/b0jmCzy.png "Confirmation dialog")
+![alt text](https://i.imgur.com/WdNqIt5.png "Confirmation dialog (dark)")
 
 You can combine different configurations to get what you need for a dialog.
 ```javascript
@@ -207,6 +210,7 @@ new duDialog('Select fruits',
   });
 ```
 ![alt text](https://i.imgur.com/LR1Zffx.png "Multiple select dialog")
+![alt text](https://i.imgur.com/gutG6GD.png "Multiple select dialog (dark)")
 
 **Note: Action buttons are enforced for selection dialog, you don't need to specify the dialog action buttons ('type' duDialog paramter) if `selection: true`.**
 

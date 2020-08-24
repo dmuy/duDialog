@@ -23,6 +23,7 @@
 		defaults = {
 			id: null,				// id attribute of the dialog container (for specific dialog styling convenience)
 			init: false,			// determines if initialize only (dialog will not be shown immediately after initialization)
+			dark: false,			// determines if dark theme is on
 			okText: 'Ok',			// display text for the 'OK' button
 			cancelText: 'Cancel',	// display text for the 'Cancel' button
 			selection: false,		// determines if dialog is for item selection
@@ -249,6 +250,9 @@
 
 			_.docFrag = document.createDocumentFragment();
 			_.dialog = createElem('div', { className: 'du-dialog', id: _.config.id });
+
+			if (_.config.dark) _.dialog.setAttribute('dark', true);
+			if (_.config.selection) _.dialog.setAttribute('selection', true)
 
 			appendTo(_.dialog, _.docFrag);
 			

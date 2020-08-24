@@ -93,6 +93,8 @@
 			width: 100%;
 			border: none;
 			outline: none;
+			color: inherit;
+			background-color: transparent;
 		}
 
 	.du-dialog .dlg-content {
@@ -272,6 +274,32 @@
 		.du-dialog .dlg-action:focus, .du-dialog .dlg-action:hover { background-color: #f5f5f5; }
 		.du-dialog .dlg-action:active { background-color: #e0e0e0; }
 		.du-dialog .dlg-action + .dlg-action { margin-left: 8px; }
+
+.du-dialog[dark="true"] .dlg-wrapper {
+	background-color: rgb(29,29,29);
+}
+.du-dialog[dark="true"] .dlg-header,
+.du-dialog[dark="true"] .dlg-content {
+	color: rgba(255, 255, 255, 0.75);
+}
+.du-dialog[dark="true"][selection="true"] .dlg-header {
+	background-color: #121212;
+}
+.du-dialog[dark="true"] .dlg-content.content--scrolled {
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.du-dialog[dark="true"] .dlg-action:focus,
+.du-dialog[dark="true"] .dlg-action:hover,
+.du-dialog[dark="true"] .dlg-select-item:hover {
+	background-color: rgba(255, 255, 255, 0.06);
+}
+.du-dialog[dark="true"] .dlg-action:active,
+.du-dialog[dark="true"] .dlg-select-item:active {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+.du-dialog[dark="true"] .dlg-action {
+	color: #2196f3;
+}
 
 @media (min-width: 600px) {
 	.du-dialog .dlg-wrapper { max-width: 560px; }	
