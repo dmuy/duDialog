@@ -70,56 +70,65 @@ Below is the default configuration.
   cancelText: 'Cancel', // display text for the 'Cancel' button
   selection: false,     // determines if dialog is for item selection
   multiple: false,      // determines if multiple seletion (for selection dialog)
+  minSelect: 1,         // determines the minimum required selection (multi select only)
+  maxSelect: null,      // determines the maximum required selection (multi select only)
   allowSearch: false,   // determines if search input is visible/enabled (for selection dialog)
   selectedValue: null,  // default selected item value (for selection dialog)
   valueField: 'value',  // variable name for the select item value; use this for custom object structure (for selection dialog)
   textField: 'item',    // variable name for the select item display text; use this for custom object structure (for selection dialog)
-  callbacks: null       // callback functions: okClick, cancelClick, itemSelect (for selection dialog), onSearch (for selection dialog), itemRender (for selection dialog)
+  callbacks: null       // callback functions
 }
 ```
 
 Callback functions
 ```javascript
-/* 
+/**
  * Triggers on OK button click; 'this' inside the callback refers to the dialog object
- * Paramters:
- *    e - event object
+ * @param {Event} e - event object
  */
 okClick(e);
 
-/* 
+/**
  * Triggers on CANCEL button click; 'this' inside the callback refers to the dialog object
- * Paramters:
- *    e - event object
+ * @param {Event} e - event object
  */
 cancelClick(e);
 
-/* 
+/**
  * Triggers on item selection change (selection dialog); 'this' inside the callback refers to the radio button.
  * For multiple selection dialog, this will be triggered on OK button click (okClick will not be executed); 'this' does not refer to the checkbox
- * Paramters:
- *    e - event object; 
- *    i - selected item (string or object) bound to the radio button; array of selected items (string or object) for multiple selection
+ * @param {Event} e - event object; 
+ * @param {string|Object} i - selected item (string or object) bound to the radio button; array of selected items (string or object) for multiple selection
  */
 itemSelect(e, i);
 
-/* 
+/**
  * Custom search function, triggers on search input keyup (selection dialog); 'this' inside the callback refers to the dialog object.
- * Paramters:
- *    i - select item object or string;
- *    k - search query string
- * Returns: boolean (for matching item/s)
+ * @param {string|Object} i - select item object or string;
+ * @param {string} k - search query string
+ * @returns boolean (for matching item/s)
  */
 onSearch(i, k);
 
-/* 
+/**
  * Custom item render function; 'this' inside the callback refers to the dialog object.
  * Note: If used, you need to add your own styling
- * Paramters:
- *    i - select item object or string
- * Returns: string/html markup (to be used for rendering of the item label)
+ * @param {string|Object} i - select item object or string
+ * @returns string/html markup (to be used for rendering of the item label)
  */
 itemRender(i);
+
+/**
+ * Triggers on OK button click if checked items is less than the minimum (minSelect config)
+ * @param {number} min - minSelect value (configuration)
+ */
+minRequired(min);
+
+/**
+ * Triggers on item click if checked items is equal to the maximum (maxSelect config)
+ * @param {number} max - maxSelect value (configuration)
+ */
+maxReached(max);
 ```
 
 ## Usage
