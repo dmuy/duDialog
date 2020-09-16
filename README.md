@@ -34,7 +34,7 @@ https://cdn.jsdelivr.net/gh/dmuy/duDialog@{version}/duDialog.min.js
 [Learn more about the CDN](https://www.jsdelivr.com/features#gh)
 
 ### Self Hosting
-Copy `duDialog.css` and `duDialog.js` and include in your app:
+Copy `duDialog.css` and `duDialog.js` (or the minified versions `*.min.js` and `*.min.css`) in the `dist` folder and include in your app:
 ```html
 <link rel="stylesheet" type="text/css" href="{path-to}/duDialog.css">
 <script type="text/javascript" src="{path-to}/duDialog.js"></script>

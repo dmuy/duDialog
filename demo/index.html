@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>duDialog</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../dist/duDialog.css">
+	<style type="text/css">
+		html, body {
+			min-height: 100%;
+			background-color: #f5f5f5;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+		.stats {
+			margin-bottom: 12px;
+		}
+		.stats a { text-decoration: none; }
+		.stats a + a { margin-left: 8px; }
+		#one-fruit .select-item {
+			line-height: normal !important;
+			margin-top: 8px;
+		}
+		#one-fruit .select-sub {
+			display: block;
+			font-style: italic;
+			font-size: 14px;
+			margin-bottom: 8px;
+		}
+		#logger { margin-top: 24px; }
+		#logger span { display: block; }
+		#logger textarea {
+			width: 400px;
+			max-width: 100%;
+			margin-top: 4px;
+			resize: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+		<h1>duDialog</h1>
+		<div class="stats">
+			<a href="https://www.npmjs.com/package/@dmuy/dialog" rel="noreferrer" target="_blank">
+				<img alt="npm" src="https://img.shields.io/npm/dt/@dmuy/dialog?style=flat-square">
+			</a>
+			<a href="https://github.com/dmuy/duDialog" rel="noreferrer" target="_blank">
+				<img src="https://img.shields.io/github/stars/dmuy/duDialog?style=social" alt="stars">
+			</a>
+		</div>
+		<div>
+			<button id="trigger1">Info</button>
+			<button id="trigger2">Confirm</button>
+			<button id="trigger3">Yes/No</button>
+			<button id="trigger4">Simple selection</button>
+			<button id="trigger5">Multiple selection</button>
+		</div>
+		<div id="logger">
+			<span>Logger:</span>
+			<textarea id="loggerTxt" rows="10" disabled></textarea>
+		</div>
+	</div>
+	<script type="text/javascript" src="../dist/duDialog.js"></script>
+	<script type="text/javascript">
+	function log (message) {
+		document.querySelector('#loggerTxt').value = message
+	}
+
+	window.onload = function() {
+		var selectedItem, selectedItems,
+			fruits = ["Apple","Apricot","Avocado","Banana","Bell pepper","Bilberry","Blackberry","Blackcurrant","Blood orange","Blueberry","Boysenberry","Breadfruit","Canary melon","Cantaloupe","Cherimoya","Cherry","Chili pepper","Clementine","Cloudberry","Coconut","Cranberry","Cucumber","Currant","Damson","Date","Dragonfruit","Durian","Elderberry","Feijoa","Fig","Goji berry","Gooseberry","Grape","Grapefruit","Guava","Honeydew","Huckleberry","Jackfruit","Jambul","Jujube","Kiwi fruit","Kumquat","Lemon","Lime","Loquat","Lychee","Mandarine","Mango","Mulberry","Nectarine","Nut","Olive","Orange","Pamelo","Papaya","Passionfruit","Peach","Pear","Persimmon","Physalis","Pineapple","Plum","Pomegranate","Pomelo","Purple mangosteen","Quince","Raisin","Rambutan","Raspberry","Redcurrant","Rock melon","Salal berry","Satsuma","Star fruit","Strawberry","Tamarillo","Tangerine","Tomato","Ugli fruit","Watermelon"],
+        	infoDlg = duDialog('Title', 'This is a dialog message', { init: true }),
+        	confirmDlg = duDialog('Confirm', 'The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.', duDialog.OK_CANCEL, {
+				init: true, dark: true, okText: 'Proceed',
+				callbacks: {
+					okClick: function(e) {
+						this.hide()
+						log('Proceed clicked!')
+					}	
+				}
+			}),
+        	yesNoDlg = duDialog(null, 'This action cannot be undone, proceed?', duDialog.OK_CANCEL, {
+				init: true, dark: true, okText: 'Proceed',
+				callbacks: {
+					okClick: function(e) {
+						this.hide()
+						log('Proceed clicked!')
+					}	
+				}
+			}),
+			selectOneDlg = duDialog('Select fruit', fruits, { 
+				id: 'one-fruit',
+				init: true, dark: true, selection: true, selectedValue: this.selectedItem, allowSearch: true,//, valueField: 'id', textField: 'name',
+				callbacks: {
+					itemSelect: function (e, i) {
+						log('Fruit: ' + i)
+						selectedItem = this.value
+						// console.log('selectOneDlg.select', this.value)
+					},
+					itemRender: function (i) {
+						return '<span class="select-item">' + i + '</span><span class="select-sub">A Fruit</span>'
+					}
+				}
+			}),
+			selectMultDlg = duDialog('Select fruits',
+				[{id: 1, name: 'Apple'}, {id: 2, name: 'Banana'}, {id: 3, name: 'Mango'}, {id: 4, name: 'Orange'}, {id: 5, name: 'Strawberry'}], { 
+				// id: 'multi-fruit',
+				init: true, dark: true, selection: true, multiple: true, selectedValue: this.selectedItems, allowSearch: true, valueField: 'id', textField: 'name',
+				maxSelect: 3,
+				callbacks: {
+					itemSelect: function (e, i) {
+						log((i.length > 1 ? 'Fruits' : 'Fruit') + ': ' + i.map(function(x) { return x.name }).join(', '))
+						selectedItems = this.value
+						// console.log('selectMultDlg.select', this.value)
+					},
+					minRequired: function (min) {
+						log('Minimum selection required: '+ min)
+					},
+					maxReached: function (max) {
+						log('Maximum selection reached: ' + max)
+					}
+				}
+			}),
+			evtHandler = function (e) {
+				if (e.target.id === 'trigger1') { infoDlg.show() }
+				else if (e.target.id === 'trigger2') { confirmDlg.show() }
+				else if (e.target.id === 'trigger3') { yesNoDlg.show() }
+				else if (e.target.id === 'trigger4') { selectOneDlg.show() }
+				else if (e.target.id === 'trigger5') { selectMultDlg.show() }
+			};
+
+		var triggers = document.querySelectorAll('#trigger1, #trigger2, #trigger3, #trigger4, #trigger5');
+		
+		for (var i = 0; i < triggers.length; i++) {
+			triggers[i].addEventListener('click', evtHandler)
+		}
+	}
+	</script>
+</body>
+</html>
