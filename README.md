@@ -14,7 +14,7 @@ npm i @dmuy/dialog
 
 Include in your app
 ```javascript
-import '@dmuy/dialog/duDialog.css'
+import '@dmuy/dialog/dist/duDialog.css'
 import duDialog from '@dmuy/dialog'
 ```
 
