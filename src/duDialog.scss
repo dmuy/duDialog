@@ -26,7 +26,7 @@ $shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px
 $borderRadius: 4px; // dialog & action
 
 .du-dialog {
-    font-family: Roboto, sans-serif;
+	font-family: Roboto, sans-serif;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -39,35 +39,35 @@ $borderRadius: 4px; // dialog & action
 	opacity: 0;
 	user-select: none;
 	background-color: transparent;
-    transition: background-color .2s linear, opacity .2s ease;
-    will-change: background-color, visibility, opacity;
-    overflow: hidden;
-    z-index: 999999;
-    
-    .dlg-wrapper {
-	    min-width: 280px;
-	    max-width: 90%;
-	    max-height: 90%;
-	    display: flex;
-	    flex-direction: column;
-	    justify-content: space-around;
-	    background-color: $dlgBg;
-	    outline: none;
-	    border-radius: $borderRadius;
+	transition: background-color .2s linear, opacity .2s ease;
+	will-change: background-color, visibility, opacity;
+	overflow: hidden;
+	z-index: 999999;
+	
+	.dlg-wrapper {
+		min-width: 280px;
+		max-width: 90%;
+		max-height: 90%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		background-color: $dlgBg;
+		outline: none;
+		border-radius: $borderRadius;
 		transform: scale(.8);
-	    transition: transform .18s cubic-bezier(.4,0,.2,1);
+		transition: transform .18s cubic-bezier(.4,0,.2,1);
 		box-shadow: $shadow;
-        overflow: hidden;
-    }
-    
-    .dlg-header {
+		overflow: hidden;
+	}
+	
+	.dlg-header {
 		padding: 16px 24px 8px;
 		font-size: 20px;
-	    font-weight: 500;
-	    letter-spacing: 0.02em;
-        line-height: 32px;
-        
-        .dlg-search {
+		font-weight: 500;
+		letter-spacing: 0.02em;
+		line-height: 32px;
+		
+		.dlg-search {
 			display: block;
 			font-family: inherit;
 			font-size: 16px;
@@ -81,9 +81,9 @@ $borderRadius: 4px; // dialog & action
 			color: inherit;
 			background-color: transparent;
 		}
-    }
-    
-    .dlg-content {
+	}
+	
+	.dlg-content {
 		padding: 0 24px 20px 24px;
 		color: #757575;
 		font-size: 16px;
@@ -91,68 +91,68 @@ $borderRadius: 4px; // dialog & action
 		letter-spacing: 0.03em;
 		border-top: 1px solid transparent;
 		overflow-x: hidden;
-        overflow-y: auto;
-        
-        &.content--scrolled { border-top: 1px solid #e0e0e0; }
-    }
-    
-    .dlg-select-item {
-        position: relative;
-        margin: 0 -24px;
-        padding: 0 24px;
-        cursor: pointer;
-        transition: background-color .2s linear;
+		overflow-y: auto;
+		
+		&.content--scrolled { border-top: 1px solid #e0e0e0; }
+	}
+	
+	.dlg-select-item {
+		position: relative;
+		margin: 0 -24px;
+		padding: 0 24px;
+		cursor: pointer;
+		transition: background-color .2s linear;
 
-        &:hover { background-color: $hoverBg; }
+		&:hover { background-color: $hoverBg; }
 
-        &:active { background-color: $activeBg; }
+		&:active { background-color: $activeBg; }
 
-        .dlg-select-radio,
-        .dlg-select-checkbox {
-            position: absolute;
-	        top: 12px;
-	        height: 18px;
-	        width: 18px;
-	        opacity: 0;
-        }
+		.dlg-select-radio,
+		.dlg-select-checkbox {
+			position: absolute;
+			top: 12px;
+			height: 18px;
+			width: 18px;
+			opacity: 0;
+		}
 
-        .dlg-select-lbl {
+		.dlg-select-lbl {
 			position: relative;
 			display: inline-block;
 			padding-left: 40px;
 			margin: 0;
-            cursor: pointer;
-            
-            .select-item {
+			cursor: pointer;
+			
+			.select-item {
 				display: block;
 				line-height: 48px;
 			}
-        }
-        
-        .dlg-select-checkbox {
-            &  + .dlg-select-lbl::before {
-                content: '';
-                display: block;
-                position: absolute;
-                width: 16px;
-                height: 16px;
-                top: 50%;
-                left: 6px;
-                cursor: pointer;
-                border: 2px solid #757575;
-                transform: translateY(-50%);
-                border-radius: 2px;
-                box-sizing: content-box;
-                transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
-                will-change: border-color;
-            }
+		}
+		
+		.dlg-select-checkbox {
+			&  + .dlg-select-lbl::before {
+				content: '';
+				display: block;
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				top: 50%;
+				left: 6px;
+				cursor: pointer;
+				border: 2px solid #757575;
+				transform: translateY(-50%);
+				border-radius: 2px;
+				box-sizing: content-box;
+				transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+				will-change: border-color;
+			}
 
-            &:checked + .dlg-select-lbl::before {
-                background-color: $selectedColor;
-                border-color: $selectedColor;
-            }
+			&:checked + .dlg-select-lbl::before {
+				background-color: $selectedColor;
+				border-color: $selectedColor;
+			}
 
-            & + .dlg-select-lbl::after {
+			& + .dlg-select-lbl::after {
 				content: '';
 				display: block;
 				position: absolute;
@@ -167,31 +167,31 @@ $borderRadius: 4px; // dialog & action
 				box-sizing: content-box;
 				transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
 				transform: rotate(-45deg) scale(0);
-	            will-change: transform;
-            }
-            
-            &:checked + .dlg-select-lbl::after {
-                transform: rotate(-45deg) scale(1);
-            }
-        }
+				will-change: transform;
+			}
+			
+			&:checked + .dlg-select-lbl::after {
+				transform: rotate(-45deg) scale(1);
+			}
+		}
 
-        &.item--nomatch { display: none; }
+		&.item--nomatch { display: none; }
 
-        &.item--disabled {
-            cursor: default;
+		&.item--disabled {
+			cursor: default;
 
-            .dlg-select-lbl,
-            .dlg-select-lbl::before,
-            .dlg-select-lbl::after { cursor: default; }
-        }
+			.dlg-select-lbl,
+			.dlg-select-lbl::before,
+			.dlg-select-lbl::after { cursor: default; }
+		}
 
-        .dlg-select-radio {
-            & + .dlg-select-lbl::before {
+		.dlg-select-radio {
+			& + .dlg-select-lbl::before {
 				content: "";
 				display: block;
 				position: absolute;
 				height: 16px;
-	            width: 16px;
+				width: 16px;
 				top: 50%;
 				left: 6px;
 				cursor: pointer;
@@ -200,12 +200,12 @@ $borderRadius: 4px; // dialog & action
 				border-radius: 50%;
 				box-sizing: content-box;
 				transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
-	            will-change: border-color;
-            }
-            
-            &:checked + .dlg-select-lbl::before { border-color: $selectedColor; }
+				will-change: border-color;
+			}
+			
+			&:checked + .dlg-select-lbl::before { border-color: $selectedColor; }
 
-            & + .dlg-select-lbl::after {
+			& + .dlg-select-lbl::after {
 				content: '';
 				position: absolute;
 				top: 50%;
@@ -220,19 +220,19 @@ $borderRadius: 4px; // dialog & action
 				transform: scale(0);
 				transform-origin: center;
 				transition: transform .28s cubic-bezier(.4,0,.2,1);
-	            will-change: transform, background-color;
-            }
-            
-            &:checked + .dlg-select-lbl::after { transform: scale(1); }
-        }
-    }
+				will-change: transform, background-color;
+			}
+			
+			&:checked + .dlg-select-lbl::after { transform: scale(1); }
+		}
+	}
 
-    .dlg-actions {
+	.dlg-actions {
 		padding: 8px;
 		text-align: right;
-    }
-    
-    .dlg-action {
+	}
+	
+	.dlg-action {
 		font-family: inherit;
 		font-size: 14px;
 		border: none;
@@ -247,68 +247,68 @@ $borderRadius: 4px; // dialog & action
 		background-color: transparent;
 		border-radius: $borderRadius;
 		outline: none;
-	    transition: background-color .28s linear;
-        will-change: background-color;
-        
-        &:focus, &:hover { background-color: $hoverBg; }
+		transition: background-color .28s linear;
+		will-change: background-color;
+		
+		&:focus, &:hover { background-color: $hoverBg; }
 
-        &:active { background-color: $activeBg; }
+		&:active { background-color: $activeBg; }
 
-        & + .dlg-action { margin-left: 8px; }
+		& + .dlg-action { margin-left: 8px; }
 	}
-    
-    &.dlg--open {
+	
+	&.dlg--open {
 		background-color: $dlgOverlay;
 		visibility: visible;
-        opacity: 1;
-        
-        .dlg-wrapper { transform: scale(1); }
-    }
-    
-    &.dlg--closing {
+		opacity: 1;
+		
+		.dlg-wrapper { transform: scale(1); }
+	}
+	
+	&.dlg--closing {
 		opacity: 0;
 		background-color: transparent;
-    }
-    
-    &.dlg--pulse { animation: dlgPulse 200ms; }
+	}
+	
+	&.dlg--pulse { animation: dlgPulse 200ms; }
 
-    &.dlg--no-title {
-        .dlg-content { margin-top: 20px; }
-    }
+	&.dlg--no-title {
+		.dlg-content { margin-top: 20px; }
+	}
 
-    &[dark="true"] {
-        .dlg-wrapper {
-            background-color: $dlgBgDark;
-        }
+	&[dark="true"] {
+		.dlg-wrapper {
+			background-color: $dlgBgDark;
+		}
 
-        .dlg-header,
-        .dlg-content {
-            color: $contentColorDark;
-        }
+		.dlg-header,
+		.dlg-content {
+			color: $contentColorDark;
+		}
 
-        &[selection="true"] .dlg-header {
-            background-color: $headerBgDark;
-        }
+		&[selection="true"] .dlg-header {
+			background-color: $headerBgDark;
+		}
 
-        .dlg-content.content--scrolled {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
+		.dlg-content.content--scrolled {
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
 
-        .dlg-action {
-            color: $actionColorDark;
-        }
+		.dlg-action {
+			color: $actionColorDark;
+		}
 
-        .dlg-action:focus,
-        .dlg-action:hover,
-        .dlg-select-item:hover {
-            background-color: $hoverBgDark;
-        }
+		.dlg-action:focus,
+		.dlg-action:hover,
+		.dlg-select-item:hover {
+			background-color: $hoverBgDark;
+		}
 
-        .dlg-action:active,
-        .dlg-select-item:active {
-            background-color: $activeBgDark;
-        }
-    }
+		.dlg-action:active,
+		.dlg-select-item:active {
+			background-color: $activeBgDark;
+		}
+	}
 }
 
 @media (min-width: 600px) {
@@ -316,7 +316,7 @@ $borderRadius: 4px; // dialog & action
 }
 
 @keyframes dlgPulse {
-    from { transform: scale3d(1, 1, 1); }
-    50% { transform: scale3d(1.05, 1.05, 1.05); }
-    to { transform: scale3d(1, 1, 1); }
+	from { transform: scale3d(1, 1, 1); }
+	50% { transform: scale3d(1.05, 1.05, 1.05); }
+	to { transform: scale3d(1, 1, 1); }
 }

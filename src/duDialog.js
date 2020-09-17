@@ -1,4 +1,3 @@
-import './duDialog.scss'
 import { extend, buildUI, appendTo } from './helpers'
 import vars from './vars'
 
