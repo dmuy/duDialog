@@ -72,8 +72,10 @@
 		var selectedItem, selectedItems,
 			fruits = ["Apple","Apricot","Avocado","Banana","Bell pepper","Bilberry","Blackberry","Blackcurrant","Blood orange","Blueberry","Boysenberry","Breadfruit","Canary melon","Cantaloupe","Cherimoya","Cherry","Chili pepper","Clementine","Cloudberry","Coconut","Cranberry","Cucumber","Currant","Damson","Date","Dragonfruit","Durian","Elderberry","Feijoa","Fig","Goji berry","Gooseberry","Grape","Grapefruit","Guava","Honeydew","Huckleberry","Jackfruit","Jambul","Jujube","Kiwi fruit","Kumquat","Lemon","Lime","Loquat","Lychee","Mandarine","Mango","Mulberry","Nectarine","Nut","Olive","Orange","Pamelo","Papaya","Passionfruit","Peach","Pear","Persimmon","Physalis","Pineapple","Plum","Pomegranate","Pomelo","Purple mangosteen","Quince","Raisin","Rambutan","Raspberry","Redcurrant","Rock melon","Salal berry","Satsuma","Star fruit","Strawberry","Tamarillo","Tangerine","Tomato","Ugli fruit","Watermelon"],
         	infoDlg = duDialog('Title', 'This is a dialog message', { init: true }),
-        	confirmDlg = duDialog('Confirm', 'The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.', duDialog.OK_CANCEL, {
-				init: true, dark: true, okText: 'Proceed',
+        	confirmDlg = duDialog('Confirm', 'The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.', {
+				init: true, dark: true, 
+				buttons: duDialog.OK_CANCEL,
+				okText: 'Proceed',
 				callbacks: {
 					okClick: function(e) {
 						this.hide()
@@ -81,8 +83,10 @@
 					}	
 				}
 			}),
-        	yesNoDlg = duDialog(null, 'This action cannot be undone, proceed?', duDialog.OK_CANCEL, {
-				init: true, dark: true, okText: 'Proceed',
+        	yesNoDlg = duDialog(null, 'This action cannot be undone, proceed?', {
+				init: true, dark: true, 
+				buttons: duDialog.OK_CANCEL,
+				okText: 'Proceed',
 				callbacks: {
 					okClick: function(e) {
 						this.hide()

@@ -48,16 +48,15 @@ Dialog constructor:
 new duDialog(
   title,    // string || null (for no title dialogs)
   message,  // string; accepts html string also || string array or object (for selection dialog)
-  [type],   // optional; dialog button types (explained below)
   [config]  // optional; additional dialog configurations (explained below)
 )
 ```
 
 Dialog action button types:
 ```javascript
-duDialog.DEFAULT    // default action button (OK)
-duDialog.OK_CANCEL  // OK and CANCEL buttons
-duDialog.NO_ACTION  // no action button (used with single selection dialog)
+duDialog.DEFAULT    // 1 - default action button (OK)
+duDialog.OK_CANCEL  // 2 - OK and CANCEL buttons
+duDialog.NONE       // 3 - no action button (used with single selection dialog)
 ```
 
 Below is the default configuration.
@@ -66,6 +65,7 @@ Below is the default configuration.
   id: null,             // id attribute of the dialog container (for specific dialog styling convenience)
   init: false,          // determines if initialize only (dialog will not be shown immediately after initialization)
   dark: false,          // determines if dark theme is on
+  buttons: 1,           // button types (see above)
   okText: 'Ok',         // display text for the 'OK' button
   cancelText: 'Cancel', // display text for the 'Cancel' button
   selection: false,     // determines if dialog is for item selection
@@ -142,7 +142,9 @@ new duDialog('Title', 'This is a dialog message.');
 ```javascript
 // initializes the dialog with no title/header, and OK (display text is 'Proceed') and CANCEL buttons;
 // with a callback function on OK button click
-new duDialog(null, 'This action cannot be undone, proceed?', duDialog.OK_CANCEL, { okText: 'Proceed',
+new duDialog(null, 'This action cannot be undone, proceed?', {
+  buttons: duDialog.OK_CANCEL,
+  okText: 'Proceed',
   callbacks: {
     okClick: function(){
       // do something

@@ -49,45 +49,6 @@
     return Constructor;
   }
 
-  function _setPrototypeOf(o, p) {
-    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-      o.__proto__ = p;
-      return o;
-    };
-
-    return _setPrototypeOf(o, p);
-  }
-
-  function _isNativeReflectConstruct() {
-    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-    if (Reflect.construct.sham) return false;
-    if (typeof Proxy === "function") return true;
-
-    try {
-      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  function _construct(Parent, args, Class) {
-    if (_isNativeReflectConstruct()) {
-      _construct = Reflect.construct;
-    } else {
-      _construct = function _construct(Parent, args, Class) {
-        var a = [null];
-        a.push.apply(a, args);
-        var Constructor = Function.bind.apply(Parent, a);
-        var instance = new Constructor();
-        if (Class) _setPrototypeOf(instance, Class.prototype);
-        return instance;
-      };
-    }
-
-    return _construct.apply(null, arguments);
-  }
-
   function _toConsumableArray(arr) {
     return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
   }
@@ -129,6 +90,8 @@
       init: false,
       // determines if dark theme is on
       dark: false,
+      // button types (OK, OK_CANCEL, NONE)
+      buttons: 1,
       // display text for the 'OK' button
       okText: 'Ok',
       // display text for the 'Cancel' button
@@ -158,7 +121,7 @@
       // OK and Cancel buttons
       OK_CANCEL: 2,
       // no buttons
-      NO_ACTION: 3
+      NONE: 3
     }
   };
 
@@ -342,7 +305,7 @@
       if (e.type === 'click') {
         // handle overlay click if dialog has no action buttons
         if (e.target.matches('.du-dialog')) {
-          if (_.type === vars.buttons.NO_ACTION) _.hide();else dialogPulse();
+          if (_.type === vars.buttons.NONE) _.hide();else dialogPulse();
         } // handle selection item click
 
 
@@ -464,8 +427,8 @@
         }), header);
       }
 
-      for (var idx = 0; idx < _.message.length; idx++) {
-        var item = _.message[idx],
+      for (var idx = 0; idx < _.content.length; idx++) {
+        var item = _.content[idx],
             iType = _typeof(item),
             iVal = iType === 'string' ? item : item[_.config.valueField],
             iText = iType === 'string' ? item : item[_.config.textField],
@@ -492,11 +455,11 @@
       }
 
       if (_.config.multiple && _.config.maxSelect) maxSelectCheck();
-    } else content.innerHTML = _.message;
+    } else content.innerHTML = _.content;
 
     appendTo(content, wrapper);
 
-    if (_.type !== vars.buttons.NO_ACTION) {
+    if (_.type !== vars.buttons.NONE) {
       footer = createElem('div', {
         className: 'dlg-actions'
       });
@@ -530,24 +493,38 @@
     addEvents(_.dialog, ['click', 'change', 'keyup'], evtHandler);
     if (!_.config.init) _.show();
   }
+  /**
+   * Defines duDialog button types as exposed properties
+   * @param {Object} obj duDialog
+   */
 
-  var DUDialog = /*#__PURE__*/function () {
-    function DUDialog() {
-      _classCallCheck(this, DUDialog);
+  function defineButtons(obj) {
+    var props = {},
+        buttons = vars.buttons;
+
+    for (var p in buttons) {
+      props[p] = {
+        value: buttons[p]
+      };
+    }
+
+    Object.defineProperties(obj, props);
+  }
+
+  var _duDialog = /*#__PURE__*/function () {
+    function _duDialog(title, content, options) {
+      _classCallCheck(this, _duDialog);
 
       var _ = this,
-          _args = arguments,
-          titleType = _typeof(_args[0]),
-          msgType = _typeof(_args[1]),
-          tType = _typeof(_args[2]);
+          titleType = _typeof(title),
+          contType = _typeof(content);
 
-      _.config = extend(true, vars.defaults, tType === 'object' ? _args[2] : _args[3]);
-      var enforcedAction = _.config.selection ? _.config.multiple ? vars.buttons.OK_CANCEL : vars.buttons.NO_ACTION : vars.buttons.DEFAULT;
-      _.type = tType === 'object' ? enforcedAction : _args[2] || enforcedAction;
-      if (titleType === 'undefined' || titleType !== 'string' && _args[0] !== null) throw new Error('Dialog title is missing or incorrect format.');
-      if ((msgType === 'undefined' || msgType !== 'string') && !_.config.selection || !Array.isArray(_args[1]) && _.config.selection) throw new Error('Dialog message is missing or incorrect format.');
-      _.title = _args[0];
-      _.message = _args[1];
+      _.config = extend(true, vars.defaults, options);
+      _.type = _.config.selection ? _.config.multiple ? vars.buttons.OK_CANCEL : vars.buttons.NONE : _.config.buttons;
+      if (titleType === 'undefined' || titleType !== 'string' && title !== null) throw new Error('Dialog title is missing or incorrect format.');
+      if ((contType === 'undefined' || contType !== 'string') && !_.config.selection || !Array.isArray(content) && _.config.selection) throw new Error('Dialog message is missing or incorrect format.');
+      _.title = title;
+      _.content = content;
       _.cache = {};
       if (!_.config.init) buildUI.apply(_);
     }
@@ -556,7 +533,7 @@
      */
 
 
-    _createClass(DUDialog, [{
+    _createClass(_duDialog, [{
       key: "show",
       value: function show() {
         var _ = this;
@@ -605,33 +582,44 @@
       }
     }]);
 
-    return DUDialog;
+    return _duDialog;
   }();
   /**
    * Creates a dialog
    * @param {string} title Dialog title
-   * @param {string} message Dialog message or content
-   * @param {number} type Dialog buttons
+   * @param {string|string[]|object[]} content Dialog message, HTML content, or array of selection items
    * @param {Object} options Dialog configurations
+   * @param {string} options.id ID attribute of the dialog container (for specific dialog styling convenience)
+   * @param {boolean} options.init Determines if initialize-only (dialog will not be shown immediately after initialization)
+   * @param {boolean} options.dark Determines if dark theme is on
+   * @param {number} options.buttons Button types (OK, OK_CANCEL, NONE)
+   * @param {string} options.okText Display text for the 'OK' button
+   * @param {string} options.cancelText Display text for the 'Cancel' button
+   * @param {boolean} options.selection Determines if dialog is for item selection
+   * @param {boolean} options.multiple Determines if multiple seletion (for selection dialog)
+   * @param {number} options.minSelect Determines the minimum required selection (multi select only)
+   * @param {number} options.maxSelect Determines the maximum required selection (multi select only)
+   * @param {boolean} options.allowSearch Determines if search input is visible/enabled (for selection dialog)
+   * @param options.selectedValue Default selected item value (for selection dialog)
+   * @param {string} options.valueField Variable name for the select item value; use this for custom object structure (for selection dialog)
+   * @param {string} options.textField Variable name for the select item display text; use this for custom object structure (for selection dialog)
+   * @param {object} options.callbacks Callback functions holder
+   * @param {Function} options.callbacks.okClick Click callback for the 'OK' button
+   * @param {Function} options.callbacks.cancelClick Click callback for the 'Cancel' button
+   * @param {Function} options.callbacks.itemSelect Selection callback for selection dialog
+   * @param {Function} options.callbacks.onSearch Search callback function
+   * @param {Function} options.callbacks.itemRender Selection item render callback function
+   * @param {Function} options.callbacks.minRequired Minimum item selection check callback function
+   * @param {Function} options.callbacks.maxReached Maximum item selection check callback function
    */
 
 
-  function duDialog(title, message, type, options) {
-    return _construct(DUDialog, Array.prototype.slice.call(arguments));
+  function duDialog(title, content, options) {
+    return new _duDialog(title, content, options);
   }
 
-  Object.defineProperties(duDialog, {
-    DEFAULT: {
-      value: vars.buttons.DEFAULT
-    },
-    OK_CANCEL: {
-      value: vars.buttons.OK_CANCEL
-    },
-    NO_ACTION: {
-      value: vars.buttons.NO_ACTION
-    }
-  });
-  /* Polyfills for unsupported methods/functions */
+  defineButtons(duDialog);
+  /* Polyfills */
 
   if (!Element.prototype.matches) {
     Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector || function (s) {

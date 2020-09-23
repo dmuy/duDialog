@@ -7,6 +7,8 @@ export default {
         init: false,
         // determines if dark theme is on
         dark: false,
+        // button types (OK, OK_CANCEL, NONE)
+        buttons: 1,
         // display text for the 'OK' button
         okText: 'Ok',
         // display text for the 'Cancel' button
@@ -36,6 +38,6 @@ export default {
         // OK and Cancel buttons
         OK_CANCEL: 2,
         // no buttons
-        NO_ACTION: 3
+        NONE: 3
     }
 }

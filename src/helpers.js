@@ -173,7 +173,7 @@ export function buildUI() {
             if (e.type === 'click') {
                 // handle overlay click if dialog has no action buttons
                 if (e.target.matches('.du-dialog')) {
-                    if (_.type === vars.buttons.NO_ACTION) _.hide()
+                    if (_.type === vars.buttons.NONE) _.hide()
                     else dialogPulse()
                 }
 
@@ -286,8 +286,8 @@ export function buildUI() {
             appendTo(createElem('input', { className: 'dlg-search', placeholder: 'Search...' }), header)
         }
 
-        for (var idx = 0; idx < _.message.length; idx++) {
-            var item = _.message[idx], iType = typeof item,
+        for (var idx = 0; idx < _.content.length; idx++) {
+            var item = _.content[idx], iType = typeof item,
                 iVal = iType === 'string' ? item : item[_.config.valueField],
                 iText = iType === 'string' ? item : item[_.config.textField],
                 itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(iVal.toString()),
@@ -310,11 +310,11 @@ export function buildUI() {
         }
 
         if (_.config.multiple && _.config.maxSelect) maxSelectCheck()
-    } else content.innerHTML = _.message
+    } else content.innerHTML = _.content
 
     appendTo(content, wrapper)
 
-    if (_.type !== vars.buttons.NO_ACTION) {
+    if (_.type !== vars.buttons.NONE) {
         footer = createElem('div', { className: 'dlg-actions' })
         appendTo(footer, wrapper)
     }
@@ -336,4 +336,18 @@ export function buildUI() {
     addEvents(_.dialog, ['click', 'change', 'keyup'], evtHandler)
 
     if (!_.config.init) _.show()
+}
+
+/**
+ * Defines duDialog button types as exposed properties
+ * @param {Object} obj duDialog
+ */
+export function defineButtons(obj) {
+    let props = {}, buttons = vars.buttons
+
+    for(let p in buttons) {
+        props[p] = { value: buttons[p] }
+    }
+
+    Object.defineProperties(obj, props)
 }
