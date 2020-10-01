@@ -330,11 +330,14 @@
 
               if (checkedVals.length >= _.config.minSelect) {
                 _.config.selectedValue = checkedVals;
-                cbs.itemSelect.apply({
-                  value: checkedVals
-                }, [e, checkedItems]);
 
-                _.hide();
+                if (cbs && cbs.itemSelect) {
+                  cbs.itemSelect.apply({
+                    value: checkedVals
+                  }, [e, checkedItems]);
+
+                  _.hide();
+                }
               } else {
                 dialogPulse();
                 if (cbs && cbs.minRequired) cbs.minRequired.call(_, _.config.minSelect);
