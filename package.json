@@ -1,6 +1,6 @@
 {
     "name": "@dmuy/dialog",
-    "version": "1.1.2-rc2",
+    "version": "1.1.2",
     "description": "A simple material concept dialog plugin",
     "keywords": [
         "dialog",
@@ -18,7 +18,8 @@
     "homepage": "https://dmuy.github.io/duDialog/",
     "main": "dist/duDialog.js",
     "files": [
-        "dist"
+        "dist",
+        "vue-dialog.js"
     ],
     "scripts": {
         "build": "npm run compile && npm run minify",
