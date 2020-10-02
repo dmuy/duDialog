@@ -38,6 +38,6 @@ export default {
         // OK and Cancel buttons
         OK_CANCEL: 2,
         // no buttons
-        NONE: 3
+        NONE: 0
     }
 }
