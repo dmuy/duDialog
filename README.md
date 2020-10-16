@@ -2,6 +2,8 @@ duDialog
 =========
 [![vanilla js](https://img.shields.io/npm/dt/@dmuy/dialog?style=flat-square)](https://www.npmjs.com/package/@dmuy/dialog)
 
+[![Buy Me A Coffee](https://i.imgur.com/PbiWKn8.png)](https://www.buymeacoffee.com/dmuy)
+
 A simple material concept dialog plugin (no jQuery required, no markup needed).
 
 ## Documentation
