@@ -3,7 +3,7 @@ title: dmuy - duDialog
 layout: default
 ---
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.1.1-rc/duDialog.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.1.2/dist/duDialog.min.css">
 <style type="text/css">
     .btn { margin-bottom: 8px; }
     .btn + .btn { margin-left: 8px;  }
@@ -20,52 +20,46 @@ layout: default
 {{ docu_file | markdownify }}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.1.1-rc/duDialog.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/dmuy/duDialog@1.1.2/dist/duDialog.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     function logger(msg) { $('#logger').html(msg) }
     
     var dlg = new duDialog('Title', 'Dialog message', { init: true }),
-        confirmDlg = new duDialog('Confirmation', 'Are you sure you want to proceed?', duDialog.OK_CANCEL, 
-            { 
-                init: true, okText: 'Proceed',
-                callbacks: {
-                    okClick: function(){
-                        this.hide();
-                        logger('Proceed button clicked.');
-                    }
+        confirmDlg = new duDialog('Confirmation', 'Are you sure you want to proceed?', { 
+            init: true, buttons: duDialog.OK_CANCEL, okText: 'Proceed',
+            callbacks: {
+                okClick: function(){
+                    this.hide();
+                    logger('Proceed button clicked.');
                 }
-            }),
-        noTitleDlg = new duDialog(null, 'Are you sure you want to proceed?', duDialog.OK_CANCEL, 
-            { 
-                init: true, okText: 'Proceed',
-                callbacks: {
-                    okClick: function(){
-                        this.hide();
-                        logger('Proceed button clicked.');
-                    }
+            }
+        }),
+        noTitleDlg = new duDialog(null, 'Are you sure you want to proceed?', { 
+            init: true, buttons: duDialog.OK_CANCEL, okText: 'Proceed',
+            callbacks: {
+                okClick: function(){
+                    this.hide();
+                    logger('Proceed button clicked.');
                 }
-            }),
-        selectSingle = new duDialog('Select fruit',
-            [{ name: 'Apple', id: 1 }, { name: 'Banana', id: 2 }, { name: 'Mango', id: 3 }, { name: 'Orange', id: 4 }, { name: 'Strawberry', id: 5 }], 
-            { 
-                init: true, selection: true, valueField: 'id', textField: 'name',
-                callbacks: {
-                    itemSelect: function (e, i) {
-                        logger(i.name + ' selected. Value: ' + this.value);
-                    }
+            }
+        }),
+        selectSingle = new duDialog('Select fruit', [{ name: 'Apple', id: 1 }, { name: 'Banana', id: 2 }, { name: 'Mango', id: 3 }, { name: 'Orange', id: 4 }, { name: 'Strawberry', id: 5 }], { 
+            init: true, selection: true, valueField: 'id', textField: 'name',
+            callbacks: {
+                itemSelect: function (e, i) {
+                    logger(i.name + ' selected. Value: ' + this.value);
                 }
-            }),
-        selectMulti = new duDialog('Select fruits',
-            ['Apple', 'Banana', 'Mango', 'Orange', 'Strawberry'], 
-            { 
-                init: true, selection: true, multiple: true,
-                callbacks: {
-                    itemSelect: function (e, i) {
-                        logger(this.value.join(', ') + ' selected.');
-                    }
+            }
+        }),
+        selectMulti = new duDialog('Select fruits', ['Apple', 'Banana', 'Mango', 'Orange', 'Strawberry'], { 
+            init: true, selection: true, multiple: true,
+            callbacks: {
+                itemSelect: function (e, i) {
+                    logger(this.value.join(', ') + ' selected.');
                 }
-            });
+            }
+        });
     
     $('#btn1').click(function(){ dlg.show() });
     $('#btn2').click(function(){ confirmDlg.show() });
