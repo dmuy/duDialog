@@ -53,7 +53,8 @@
 		<div>
 			<button id="trigger1">Info</button>
 			<button id="trigger2">Confirm</button>
-			<button id="trigger3">Yes/No</button>
+			<button id="trigger3">OK/Cancel (Yes/No)</button>
+			<button id="trigger6">Yes/No/Cancel</button>
 			<button id="trigger4">Simple selection</button>
 			<button id="trigger5">Multiple selection</button>
 		</div>
@@ -133,9 +134,24 @@
 				else if (e.target.id === 'trigger3') { yesNoDlg.show() }
 				else if (e.target.id === 'trigger4') { selectOneDlg.show() }
 				else if (e.target.id === 'trigger5') { selectMultDlg.show() }
+				else if (e.target.id === 'trigger6') {
+					duDialog(null, 'You have unsaved changes, do you want to save it?', {
+						buttons: duDialog.YES_NO_CANCEL, yesText: 'Save', noText: 'Discard',
+						callbacks: {
+							yesClick: function (e) {
+								this.hide();
+								log('Save clicked!');
+							},
+							noClick: function (e) {
+								this.hide();
+								log('Discard clicked!')
+							}
+						}
+					});
+				}
 			};
 
-		var triggers = document.querySelectorAll('#trigger1, #trigger2, #trigger3, #trigger4, #trigger5');
+		var triggers = document.querySelectorAll('#trigger1, #trigger2, #trigger3, #trigger4, #trigger5, #trigger6');
 		
 		for (var i = 0; i < triggers.length; i++) {
 			triggers[i].addEventListener('click', evtHandler)

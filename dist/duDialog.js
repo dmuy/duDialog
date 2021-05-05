@@ -94,6 +94,10 @@
       buttons: 1,
       // display text for the 'OK' button
       okText: 'Ok',
+      // display text for the 'Yes' button
+      yesText: 'Yes',
+      // display text for the 'No' button
+      noText: 'No',
       // display text for the 'Cancel' button
       cancelText: 'Cancel',
       // determines if dialog is for item selection
@@ -120,6 +124,8 @@
       DEFAULT: 1,
       // OK and Cancel buttons
       OK_CANCEL: 2,
+      // Yes, No, Cancel buttons
+      YES_NO_CANCEL: 3,
       // no buttons
       NONE: 0
     }
@@ -345,6 +351,16 @@
             } else {
               if (cbs && cbs.okClick) cbs.okClick.apply(_, e);else _.hide();
             }
+          } // Yes button
+
+
+          if (e.target.matches('.yes-action')) {
+            if (cbs && cbs.yesClick) cbs.yesClick.apply(_, e);else _.hide();
+          } // No button
+
+
+          if (e.target.matches('.no-action')) {
+            if (cbs && cbs.noClick) cbs.noClick.apply(_, e);else _.hide();
           } // CANCEL button
 
 
@@ -480,6 +496,19 @@
           className: 'dlg-action ok-action',
           tabIndex: 1
         }, _.config.okText)], footer);
+        break;
+
+      case vars.buttons.YES_NO_CANCEL:
+        appendTo([createElem('button', {
+          className: 'dlg-action cancel-action',
+          tabIndex: 3
+        }, _.config.cancelText), createElem('button', {
+          className: 'dlg-action no-action',
+          tabIndex: 2
+        }, _.config.noText), createElem('button', {
+          className: 'dlg-action yes-action',
+          tabIndex: 1
+        }, _.config.yesText)], footer);
         break;
 
       case vars.buttons.DEFAULT:

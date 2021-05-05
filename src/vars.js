@@ -11,6 +11,10 @@ export default {
         buttons: 1,
         // display text for the 'OK' button
         okText: 'Ok',
+        // display text for the 'Yes' button
+        yesText: 'Yes',
+        // display text for the 'No' button
+        noText: 'No',
         // display text for the 'Cancel' button
         cancelText: 'Cancel',
         // determines if dialog is for item selection
@@ -37,6 +41,8 @@ export default {
         DEFAULT: 1,
         // OK and Cancel buttons
         OK_CANCEL: 2,
+        // Yes, No, Cancel buttons
+        YES_NO_CANCEL: 3,
         // no buttons
         NONE: 0
     }

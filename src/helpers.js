@@ -213,6 +213,18 @@ export function buildUI() {
                         }
                     }
 
+                    // Yes button
+                    if (e.target.matches('.yes-action')) {
+                        if (cbs && cbs.yesClick) cbs.yesClick.apply(_, e)
+                        else _.hide()
+                    }
+
+                    // No button
+                    if (e.target.matches('.no-action')) {
+                        if (cbs && cbs.noClick) cbs.noClick.apply(_, e)
+                        else _.hide()
+                    }
+
                     // CANCEL button
                     if (e.target.matches('.cancel-action')) {
                         if (cbs && cbs.cancelClick) cbs.cancelClick.apply(_, e)
@@ -326,6 +338,12 @@ export function buildUI() {
         case vars.buttons.OK_CANCEL:
             appendTo([createElem('button', { className: 'dlg-action cancel-action', tabIndex: 2 }, _.config.cancelText),
             createElem('button', { className: 'dlg-action ok-action', tabIndex: 1 }, _.config.okText)
+            ], footer)
+            break;
+        case vars.buttons.YES_NO_CANCEL:
+            appendTo([createElem('button', { className: 'dlg-action cancel-action', tabIndex: 3 }, _.config.cancelText),
+            createElem('button', { className: 'dlg-action no-action', tabIndex: 2 }, _.config.noText),
+            createElem('button', { className: 'dlg-action yes-action', tabIndex: 1 }, _.config.yesText),
             ], footer)
             break;
         case vars.buttons.DEFAULT:
