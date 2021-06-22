@@ -57,6 +57,7 @@
 			<button id="trigger6">Yes/No/Cancel</button>
 			<button id="trigger4">Simple selection</button>
 			<button id="trigger5">Multiple selection</button>
+			<button id="trigger7">Grouped Selection</button>
 		</div>
 		<div id="logger">
 			<span>Logger:</span>
@@ -70,8 +71,22 @@
 	}
 
 	window.onload = function() {
-		var selectedItem, selectedItems,
+		var selectedItem, selectedItems = [], selectedFruits = [],
 			fruits = ["Apple","Apricot","Avocado","Banana","Bell pepper","Bilberry","Blackberry","Blackcurrant","Blood orange","Blueberry","Boysenberry","Breadfruit","Canary melon","Cantaloupe","Cherimoya","Cherry","Chili pepper","Clementine","Cloudberry","Coconut","Cranberry","Cucumber","Currant","Damson","Date","Dragonfruit","Durian","Elderberry","Feijoa","Fig","Goji berry","Gooseberry","Grape","Grapefruit","Guava","Honeydew","Huckleberry","Jackfruit","Jambul","Jujube","Kiwi fruit","Kumquat","Lemon","Lime","Loquat","Lychee","Mandarine","Mango","Mulberry","Nectarine","Nut","Olive","Orange","Pamelo","Papaya","Passionfruit","Peach","Pear","Persimmon","Physalis","Pineapple","Plum","Pomegranate","Pomelo","Purple mangosteen","Quince","Raisin","Rambutan","Raspberry","Redcurrant","Rock melon","Salal berry","Satsuma","Star fruit","Strawberry","Tamarillo","Tangerine","Tomato","Ugli fruit","Watermelon"],
+			groupedFruits = [
+				{
+					group: 'Red',
+					items: ['Red Apple','Blood Orange','Cherry','Cranberry','Pink grapefruit','Red grape','Lingonberry','Red pear','Raspberry','Strawberry','Watermelon']
+				},
+				{
+					group: 'Blue',
+					items: ['Blueberry','Concord Grape','Sloe Plums','Damson Plums','Honeyberry']
+				},
+				{
+					group: 'Green',
+					items: ['Avocado','Green Apple','Green Grape', 'Green Pear','Honeydew Melon','Kiwi']
+				}
+			],
         	infoDlg = duDialog('Title', 'This is a dialog message', { init: true }),
         	confirmDlg = duDialog('Confirm', 'The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.', {
 				init: true, dark: true, 
@@ -149,9 +164,21 @@
 						}
 					});
 				}
+				else if (e.target.id === 'trigger7') {
+					duDialog('Select fruits', groupedFruits, {
+						selection: true, multiple: true, allowSearch: true, dark: true,
+						selectedValue: selectedFruits,
+						callbacks: {
+							itemSelect: function (e, i) {
+								log((i.length > 1 ? 'Fruits' : 'Fruit') + ': ' + i.join(', '))
+								selectedFruits = i
+							}
+						}
+					})
+				}
 			};
 
-		var triggers = document.querySelectorAll('#trigger1, #trigger2, #trigger3, #trigger4, #trigger5, #trigger6');
+		var triggers = document.querySelectorAll('#trigger1, #trigger2, #trigger3, #trigger4, #trigger5, #trigger6, #trigger7');
 		
 		for (var i = 0; i < triggers.length; i++) {
 			triggers[i].addEventListener('click', evtHandler)

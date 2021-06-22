@@ -376,9 +376,9 @@
           var el = e.target;
 
           if (el.checked && cbs && cbs.itemSelect) {
-            var item = _.cache[el.id];
-            _.config.selectedValue = typeof item === 'string' ? el.value : item[_.config.valueField];
-            cbs.itemSelect.apply(el, [e, item]);
+            var _item = _.cache[el.id];
+            _.config.selectedValue = typeof _item === 'string' ? el.value : _item[_.config.valueField];
+            cbs.itemSelect.apply(el, [e, _item]);
 
             _.hide();
           }
@@ -396,17 +396,67 @@
           var _keyword = e.target.value,
               _items = content.querySelectorAll('.dlg-select-item');
 
-          for (var i = 0; i < _items.length; i++) {
-            var dlgItem = _items[i],
+          for (var _i = 0; _i < _items.length; _i++) {
+            var dlgItem = _items[_i],
                 input = dlgItem.querySelector(_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio'),
-                item = _.cache[input.id],
-                iType = _typeof(item),
-                iText = iType === 'string' ? item : item[_.config.textField],
+                _item2 = _.cache[input.id],
+                iType = _typeof(_item2),
+                iText = iType === 'string' ? _item2 : _item2[_.config.textField],
                 _matched = false;
 
-            _matched = cbs && cbs.onSearch ? cbs.onSearch.call(_, item, _keyword) : iText.toLowerCase().indexOf(_keyword.toLowerCase()) >= 0;
+            _matched = cbs && cbs.onSearch ? cbs.onSearch.call(_, _item2, _keyword) : iText.toLowerCase().indexOf(_keyword.toLowerCase()) >= 0;
             dlgItem.classList[_matched ? 'remove' : 'add']('item--nomatch');
           }
+        }
+      }
+    },
+        addItemDOM = function addItemDOM(item, id, value, label) {
+      var isGroup = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+      if (isGroup) {
+        var groupEl = createElem('div', {
+          className: 'dlg-select-item select--group'
+        }, item);
+        appendTo(groupEl, content);
+      } else {
+        var itemEl = createElem('div', {
+          className: 'dlg-select-item'
+        }),
+            selectEl = createElem('input', {
+          className: _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio',
+          id: id,
+          name: 'dlg-selection',
+          type: _.config.multiple ? 'checkbox' : 'radio',
+          value: value,
+          checked: _.config.multiple ? _.config.selectedValue && inArray(_.config.selectedValue, value) : _.config.selectedValue === value
+        }),
+            labelEl = createElem('label', {
+          className: 'dlg-select-lbl',
+          htmlFor: id
+        }, cbs && cbs.itemRender ? cbs.itemRender.call(_, item) : '<span class="select-item">' + label + '</span>', true);
+        _.cache[id] = item;
+        appendTo([selectEl, labelEl], itemEl);
+        appendTo(itemEl, content);
+      }
+    },
+        addItem = function addItem(item) {
+      var type = _typeof(item),
+          id = '';
+
+      if (type === 'string') {
+        id = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(item.toString());
+        addItemDOM(item, id, item, item);
+      } else {
+        if (item.group && Array.isArray(item.items)) {
+          addItemDOM(item.group, null, null, null, true);
+          item.items.forEach(function (i) {
+            return addItem(i);
+          });
+        } else {
+          var value = type === 'string' ? item : item[_.config.valueField],
+              text = type === 'string' ? item : item[_.config.textField];
+          id = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(value.toString());
+          addItemDOM(item, id, value, text);
         }
       }
     };
@@ -446,32 +496,9 @@
         }), header);
       }
 
-      for (var idx = 0; idx < _.content.length; idx++) {
-        var item = _.content[idx],
-            iType = _typeof(item),
-            iVal = iType === 'string' ? item : item[_.config.valueField],
-            iText = iType === 'string' ? item : item[_.config.textField],
-            itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(iVal.toString()),
-            sItem = createElem('div', {
-          className: 'dlg-select-item'
-        }),
-            sRadio = createElem('input', {
-          className: _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio',
-          id: itemId,
-          name: 'dlg-selection',
-          type: _.config.multiple ? 'checkbox' : 'radio',
-          value: iVal,
-          checked: _.config.multiple ? _.config.selectedValue && inArray(_.config.selectedValue, iVal) : _.config.selectedValue === iVal
-        }),
-            sLabel = createElem('label', {
-          className: 'dlg-select-lbl',
-          htmlFor: itemId
-        }, cbs && cbs.itemRender ? cbs.itemRender.call(_, item) : '<span class="select-item">' + iText + '</span>', true);
-
-        _.cache[itemId] = item;
-        appendTo([sRadio, sLabel], sItem);
-        appendTo(sItem, content);
-      }
+      _.content.forEach(function (i) {
+        return addItem(i);
+      });
 
       if (_.config.multiple && _.config.maxSelect) maxSelectCheck();
     } else content.innerHTML = _.content;

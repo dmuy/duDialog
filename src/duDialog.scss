@@ -103,9 +103,16 @@ $borderRadius: 4px; // dialog & action
 		cursor: pointer;
 		transition: background-color .2s linear;
 
-		&:hover { background-color: $hoverBg; }
+		&.select--group {
+			pointer-events: none;
+			line-height: 36px;
+			margin-top: 8px;
+			font-weight: 500;
+		}
 
-		&:active { background-color: $activeBg; }
+		&:not(.select-group):hover { background-color: $hoverBg; }
+
+		&:not(.select-group):active { background-color: $activeBg; }
 
 		.dlg-select-radio,
 		.dlg-select-checkbox {

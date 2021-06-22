@@ -146,13 +146,13 @@ export function createElem(tag, attributes, content, isHtml) {
  * Builds the dialog UI
  */
 export function buildUI() {
-    var _ = this, cbs = _.config.callbacks, wrapper, header, content, footer,
-        dialogPulse = function () {
+    let _ = this, cbs = _.config.callbacks, wrapper, header, content, footer,
+        dialogPulse = () => {
             _.dialog.classList.add('dlg--pulse')
             setTimeout(() => { _.dialog.classList.remove('dlg--pulse') }, 200)
         },
-        maxSelectCheck = function () {
-            var checked = content.querySelectorAll('.dlg-select-checkbox:checked')
+        maxSelectCheck = () => {
+            let checked = content.querySelectorAll('.dlg-select-checkbox:checked')
 
             if (checked.length === _.config.maxSelect) {
                 content.querySelectorAll('.dlg-select-checkbox:not(:checked)').forEach(function (cb) {
@@ -169,7 +169,7 @@ export function buildUI() {
             }
         },
         // global event handler
-        evtHandler = function (e) {
+        evtHandler = (e) => {
             if (e.type === 'click') {
                 // handle overlay click if dialog has no action buttons
                 if (e.target.matches('.du-dialog')) {
@@ -187,10 +187,10 @@ export function buildUI() {
                     // OK button
                     if (e.target.matches('.ok-action')) {
                         if (_.config.selection && _.config.multiple) {
-                            var checked = content.querySelectorAll('.dlg-select-checkbox:checked'), checkedVals = [], checkedItems = []
+                            let checked = content.querySelectorAll('.dlg-select-checkbox:checked'), checkedVals = [], checkedItems = []
 
-                            for (var i = 0; i < checked.length; i++) {
-                                var item = _.cache[checked[i].id]
+                            for (let i = 0; i < checked.length; i++) {
+                                let item = _.cache[checked[i].id]
 
                                 checkedItems.push(item)
                                 checkedVals.push(typeof item === 'string' ? checked[i].value : item[_.config.valueField])
@@ -236,9 +236,9 @@ export function buildUI() {
             if (e.type === 'change') {
                 // handle selection radio change
                 if (e.target.matches('.dlg-select-radio')) {
-                    var el = e.target
+                    let el = e.target
                     if (el.checked && cbs && cbs.itemSelect) {
-                        var item = _.cache[el.id]
+                        let item = _.cache[el.id]
                         _.config.selectedValue = typeof item === 'string' ? el.value : item[_.config.valueField]
                         cbs.itemSelect.apply(el, [e, item])
 
@@ -256,10 +256,10 @@ export function buildUI() {
 
             if (e.type === 'keyup') {
                 if (e.target.matches('.dlg-search')) {
-                    var _keyword = e.target.value, _items = content.querySelectorAll('.dlg-select-item')
+                    let _keyword = e.target.value, _items = content.querySelectorAll('.dlg-select-item')
 
-                    for (var i = 0; i < _items.length; i++) {
-                        var dlgItem = _items[i],
+                    for (let i = 0; i < _items.length; i++) {
+                        let dlgItem = _items[i],
                             input = dlgItem.querySelector((_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio')),
                             item = _.cache[input.id], iType = typeof item, iText = iType === 'string' ? item : item[_.config.textField],
                             _matched = false
@@ -269,6 +269,52 @@ export function buildUI() {
 
                         dlgItem.classList[_matched ? 'remove' : 'add']('item--nomatch')
                     }
+                }
+            }
+        },
+        addItemDOM = (item, id, value, label, isGroup = false) => {
+            if (isGroup) {
+                let groupEl = createElem('div', { className: 'dlg-select-item select--group' }, item)
+
+                appendTo(groupEl, content)
+            } else {
+                let itemEl = createElem('div', { className: 'dlg-select-item' }),
+                    selectEl = createElem('input', {
+                            className: _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio',
+                            id: id,
+                            name: 'dlg-selection',
+                            type: _.config.multiple ? 'checkbox' : 'radio',
+                            value: value,
+                            checked: _.config.multiple ? (_.config.selectedValue && inArray(_.config.selectedValue, value)) : _.config.selectedValue === value
+                        }),
+                    labelEl = createElem('label', {
+                            className: 'dlg-select-lbl', htmlFor: id
+                        }, (cbs && cbs.itemRender ? cbs.itemRender.call(_, item) : '<span class="select-item">' + label + '</span>'), true)
+
+                _.cache[id] = item
+                appendTo([selectEl, labelEl], itemEl)
+                appendTo(itemEl, content)
+            }
+        },
+        addItem = (item) => {
+            let type = typeof item,
+                id = ''
+
+            if(type === 'string') {
+                id = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(item.toString())
+                addItemDOM(item, id, item, item)
+            } else {
+                if (item.group && Array.isArray(item.items)) {
+                    addItemDOM(item.group, null, null, null, true)
+
+                    item.items.forEach(i => addItem(i))
+                } else {
+                    let value = type === 'string' ? item : item[_.config.valueField],
+                        text = type === 'string' ? item : item[_.config.textField]
+
+                    id = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(value.toString())
+
+                    addItemDOM(item, id, value, text)
                 }
             }
         }
@@ -300,28 +346,7 @@ export function buildUI() {
             appendTo(createElem('input', { className: 'dlg-search', placeholder: 'Search...' }), header)
         }
 
-        for (var idx = 0; idx < _.content.length; idx++) {
-            var item = _.content[idx], iType = typeof item,
-                iVal = iType === 'string' ? item : item[_.config.valueField],
-                iText = iType === 'string' ? item : item[_.config.textField],
-                itemId = (_.config.multiple ? 'dlg-cb' : 'dlg-radio') + removeSpace(iVal.toString()),
-                sItem = createElem('div', { className: 'dlg-select-item' }),
-                sRadio = createElem('input', {
-                    className: _.config.multiple ? 'dlg-select-checkbox' : 'dlg-select-radio',
-                    id: itemId,
-                    name: 'dlg-selection',
-                    type: _.config.multiple ? 'checkbox' : 'radio',
-                    value: iVal,
-                    checked: _.config.multiple ? (_.config.selectedValue && inArray(_.config.selectedValue, iVal)) : _.config.selectedValue === iVal
-                }),
-                sLabel = createElem('label', {
-                    className: 'dlg-select-lbl', htmlFor: itemId
-                }, (cbs && cbs.itemRender ? cbs.itemRender.call(_, item) : '<span class="select-item">' + iText + '</span>'), true)
-
-            _.cache[itemId] = item
-            appendTo([sRadio, sLabel], sItem)
-            appendTo(sItem, content)
-        }
+        _.content.forEach(i => addItem(i))
 
         if (_.config.multiple && _.config.maxSelect) maxSelectCheck()
     } else content.innerHTML = _.content

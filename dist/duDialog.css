@@ -90,11 +90,18 @@
   transition: background-color .2s linear;
 }
 
-.du-dialog .dlg-select-item:hover {
+.du-dialog .dlg-select-item.select--group {
+  pointer-events: none;
+  line-height: 36px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.du-dialog .dlg-select-item:not(.select-group):hover {
   background-color: #f5f5f5;
 }
 
-.du-dialog .dlg-select-item:active {
+.du-dialog .dlg-select-item:not(.select-group):active {
   background-color: #e0e0e0;
 }
 
