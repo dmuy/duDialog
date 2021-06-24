@@ -207,6 +207,17 @@ export function buildUI() {
 
                                 if (cbs && cbs.minRequired) cbs.minRequired.call(_, _.config.minSelect)
                             }
+                        } else if (_.config.selection && _.config.confirmSelect) {
+                            let selected = content.querySelector('.dlg-select-radio:checked')
+
+                            if (selected) {
+                                let item = _.cache[selected.id]
+
+                                _.config.selectedValue = typeof item === 'string' ? selected.value : item[_.config.valueField]
+                                _.hide()
+        
+                                if (cbs && cbs.itemSelect) cbs.itemSelect.apply(selected, [e, item])
+                            } else dialogPulse()
                         } else {
                             if (cbs && cbs.okClick) cbs.okClick.apply(_, e)
                             else _.hide()
@@ -237,12 +248,13 @@ export function buildUI() {
                 // handle selection radio change
                 if (e.target.matches('.dlg-select-radio')) {
                     let el = e.target
-                    if (el.checked && cbs && cbs.itemSelect) {
+                    if (el.checked && !_.config.confirmSelect) {
                         let item = _.cache[el.id]
-                        _.config.selectedValue = typeof item === 'string' ? el.value : item[_.config.valueField]
-                        cbs.itemSelect.apply(el, [e, item])
 
+                        _.config.selectedValue = typeof item === 'string' ? el.value : item[_.config.valueField]
                         _.hide()
+
+                        if (cbs && cbs.itemSelect) cbs.itemSelect.apply(el, [e, item])
                     }
                 } else if (e.target.matches('.dlg-select-checkbox')) {
                     if (_.config.maxSelect) maxSelectCheck()

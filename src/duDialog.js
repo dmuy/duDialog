@@ -7,7 +7,7 @@ class _duDialog {
 
 		_.config = extend(true, vars.defaults, options)
 
-		_.type = _.config.selection ? (_.config.multiple ? vars.buttons.OK_CANCEL : vars.buttons.NONE) : _.config.buttons
+		_.type = _.config.selection ? (_.config.multiple || _.config.confirmSelect ? vars.buttons.OK_CANCEL : vars.buttons.NONE) : _.config.buttons
 
 		if (titleType === 'undefined' || (titleType !== 'string' && title !== null))
 			throw new Error('Dialog title is missing or incorrect format.')
@@ -86,7 +86,10 @@ class _duDialog {
  * @param {number} options.buttons Button types (OK, OK_CANCEL, NONE)
  * @param {string} options.okText Display text for the 'OK' button
  * @param {string} options.cancelText Display text for the 'Cancel' button
+ * @param {string} options.yesText Display text for the 'Yes' button
+ * @param {string} options.noText Display text for the 'No' button
  * @param {boolean} options.selection Determines if dialog is for item selection
+ * @param {boolean} options.confirmSelect Determines if (single) select dialog will show the OK_CANCEL buttons for confirmation
  * @param {boolean} options.multiple Determines if multiple seletion (for selection dialog)
  * @param {number} options.minSelect Determines the minimum required selection (multi select only)
  * @param {number} options.maxSelect Determines the maximum required selection (multi select only)

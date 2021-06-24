@@ -102,6 +102,8 @@
       cancelText: 'Cancel',
       // determines if dialog is for item selection
       selection: false,
+      // determins if (single) select dialog will show the OK_CANCEL buttons for confirmation
+      confirmSelect: false,
       // determines if multiple seletion (for selection dialog)
       multiple: false,
       // determines the minimum required selection (multi select only)
@@ -348,6 +350,17 @@
                 dialogPulse();
                 if (cbs && cbs.minRequired) cbs.minRequired.call(_, _.config.minSelect);
               }
+            } else if (_.config.selection && _.config.confirmSelect) {
+              var selected = content.querySelector('.dlg-select-radio:checked');
+
+              if (selected) {
+                var _item = _.cache[selected.id];
+                _.config.selectedValue = typeof _item === 'string' ? selected.value : _item[_.config.valueField];
+
+                _.hide();
+
+                if (cbs && cbs.itemSelect) cbs.itemSelect.apply(selected, [e, _item]);
+              } else dialogPulse();
             } else {
               if (cbs && cbs.okClick) cbs.okClick.apply(_, e);else _.hide();
             }
@@ -375,12 +388,13 @@
         if (e.target.matches('.dlg-select-radio')) {
           var el = e.target;
 
-          if (el.checked && cbs && cbs.itemSelect) {
-            var _item = _.cache[el.id];
-            _.config.selectedValue = typeof _item === 'string' ? el.value : _item[_.config.valueField];
-            cbs.itemSelect.apply(el, [e, _item]);
+          if (el.checked && !_.config.confirmSelect) {
+            var _item2 = _.cache[el.id];
+            _.config.selectedValue = typeof _item2 === 'string' ? el.value : _item2[_.config.valueField];
 
             _.hide();
+
+            if (cbs && cbs.itemSelect) cbs.itemSelect.apply(el, [e, _item2]);
           }
         } else if (e.target.matches('.dlg-select-checkbox')) {
           if (_.config.maxSelect) maxSelectCheck();
@@ -399,12 +413,12 @@
           for (var _i = 0; _i < _items.length; _i++) {
             var dlgItem = _items[_i],
                 input = dlgItem.querySelector(_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio'),
-                _item2 = _.cache[input.id],
-                iType = _typeof(_item2),
-                iText = iType === 'string' ? _item2 : _item2[_.config.textField],
+                _item3 = _.cache[input.id],
+                iType = _typeof(_item3),
+                iText = iType === 'string' ? _item3 : _item3[_.config.textField],
                 _matched = false;
 
-            _matched = cbs && cbs.onSearch ? cbs.onSearch.call(_, _item2, _keyword) : iText.toLowerCase().indexOf(_keyword.toLowerCase()) >= 0;
+            _matched = cbs && cbs.onSearch ? cbs.onSearch.call(_, _item3, _keyword) : iText.toLowerCase().indexOf(_keyword.toLowerCase()) >= 0;
             dlgItem.classList[_matched ? 'remove' : 'add']('item--nomatch');
           }
         }
@@ -579,7 +593,7 @@
           contType = _typeof(content);
 
       _.config = extend(true, vars.defaults, options);
-      _.type = _.config.selection ? _.config.multiple ? vars.buttons.OK_CANCEL : vars.buttons.NONE : _.config.buttons;
+      _.type = _.config.selection ? _.config.multiple || _.config.confirmSelect ? vars.buttons.OK_CANCEL : vars.buttons.NONE : _.config.buttons;
       if (titleType === 'undefined' || titleType !== 'string' && title !== null) throw new Error('Dialog title is missing or incorrect format.');
       if ((contType === 'undefined' || contType !== 'string') && !_.config.selection || !Array.isArray(content) && _.config.selection) throw new Error('Dialog message is missing or incorrect format.');
       _.title = title;
@@ -654,7 +668,10 @@
    * @param {number} options.buttons Button types (OK, OK_CANCEL, NONE)
    * @param {string} options.okText Display text for the 'OK' button
    * @param {string} options.cancelText Display text for the 'Cancel' button
+   * @param {string} options.yesText Display text for the 'Yes' button
+   * @param {string} options.noText Display text for the 'No' button
    * @param {boolean} options.selection Determines if dialog is for item selection
+   * @param {boolean} options.confirmSelect Determines if (single) select dialog will show the OK_CANCEL buttons for confirmation
    * @param {boolean} options.multiple Determines if multiple seletion (for selection dialog)
    * @param {number} options.minSelect Determines the minimum required selection (multi select only)
    * @param {number} options.maxSelect Determines the maximum required selection (multi select only)

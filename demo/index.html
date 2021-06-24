@@ -113,6 +113,7 @@
 			selectOneDlg = duDialog('Select fruit', fruits, { 
 				id: 'one-fruit',
 				init: true, dark: true, selection: true, selectedValue: this.selectedItem, allowSearch: true,//, valueField: 'id', textField: 'name',
+				confirmSelect: true,
 				callbacks: {
 					itemSelect: function (e, i) {
 						log('Fruit: ' + i)

@@ -19,6 +19,8 @@ export default {
         cancelText: 'Cancel',
         // determines if dialog is for item selection
         selection: false,
+        // determins if (single) select dialog will show the OK_CANCEL buttons for confirmation
+        confirmSelect: false,
         // determines if multiple seletion (for selection dialog)
         multiple: false,
         // determines the minimum required selection (multi select only)
