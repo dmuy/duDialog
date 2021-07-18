@@ -42,7 +42,8 @@ class _duDialog {
 					_selected = content.querySelector('.dlg-select-radio:checked')
 
 				if (_selected) {
-					let _nodes = [...content.childNodes], _offset = 0
+					let isIE = !!window.navigator.userAgent.match(/MSIE|Trident/)
+					let _nodes = Array.from(content.childNodes), _offset = 0
 
 					for (let i = 0; i < _nodes.indexOf(_selected.parentNode); i++) {
 						let ch = _nodes[i].offsetHeight
@@ -50,7 +51,7 @@ class _duDialog {
 						_offset += ch
 					}
 
-					content.scrollTop = _offset
+					setTimeout(() => content.scrollTop = _offset, isIE ? 210 : 10)
 				}
 			}
 

@@ -270,9 +270,10 @@ export function buildUI() {
                 if (e.target.matches('.dlg-search')) {
                     let _keyword = e.target.value, _items = content.querySelectorAll('.dlg-select-item')
 
-                    for (let i = 0; i < _items.length; i++) {
-                        let dlgItem = _items[i],
-                            input = dlgItem.querySelector((_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio')),
+                    _items.forEach(dlgItem => {
+                        if (dlgItem.classList.contains('select--group')) return
+
+                        let input = dlgItem.querySelector((_.config.multiple ? '.dlg-select-checkbox' : '.dlg-select-radio')),
                             item = _.cache[input.id], iType = typeof item, iText = iType === 'string' ? item : item[_.config.textField],
                             _matched = false
 
@@ -280,7 +281,7 @@ export function buildUI() {
                             iText.toLowerCase().indexOf(_keyword.toLowerCase()) >= 0
 
                         dlgItem.classList[_matched ? 'remove' : 'add']('item--nomatch')
-                    }
+                    })
                 }
             }
         },

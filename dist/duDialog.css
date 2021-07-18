@@ -68,6 +68,7 @@
 }
 
 .du-dialog .dlg-content {
+  flex: 1 auto;
   padding: 0 24px 20px 24px;
   color: #757575;
   font-size: 16px;
@@ -328,24 +329,24 @@
 
 @-webkit-keyframes dlgPulse {
   from {
-    transform: scale3d(1, 1, 1);
+    transform: scale(1);
   }
   50% {
-    transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale(1.05);
   }
   to {
-    transform: scale3d(1, 1, 1);
+    transform: scale(1);
   }
 }
 
 @keyframes dlgPulse {
   from {
-    transform: scale3d(1, 1, 1);
+    transform: scale(1);
   }
   50% {
-    transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale(1.05);
   }
   to {
-    transform: scale3d(1, 1, 1);
+    transform: scale(1);
   }
 }
