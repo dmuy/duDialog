@@ -89,12 +89,12 @@
 			],
         	infoDlg = duDialog('Title', 'This is a dialog message', { init: true }),
         	confirmDlg = duDialog('Confirm', 'The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.', {
-				init: true, dark: true, 
+				init: true, dark: true, hideOnAction: true,
 				buttons: duDialog.OK_CANCEL,
 				okText: 'Proceed',
 				callbacks: {
 					okClick: function(e) {
-						this.hide()
+						// this.hide()
 						log('Proceed clicked!')
 					}	
 				}

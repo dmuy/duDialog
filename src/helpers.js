@@ -219,26 +219,38 @@ export function buildUI() {
                                 if (cbs && cbs.itemSelect) cbs.itemSelect.apply(selected, [e, item])
                             } else dialogPulse()
                         } else {
-                            if (cbs && cbs.okClick) cbs.okClick.apply(_, e)
+                            if (cbs && cbs.okClick) {
+                                cbs.okClick.apply(_, e)
+                                if (_.config.hideOnAction) _.hide()
+                            }
                             else _.hide()
                         }
                     }
 
                     // Yes button
                     if (e.target.matches('.yes-action')) {
-                        if (cbs && cbs.yesClick) cbs.yesClick.apply(_, e)
+                        if (cbs && cbs.yesClick) {
+                            cbs.yesClick.apply(_, e)
+                            if (_.config.hideOnAction) _.hide()
+                        }
                         else _.hide()
                     }
 
                     // No button
                     if (e.target.matches('.no-action')) {
-                        if (cbs && cbs.noClick) cbs.noClick.apply(_, e)
+                        if (cbs && cbs.noClick) {
+                            cbs.noClick.apply(_, e)
+                            if (_.config.hideOnAction) _.hide()
+                        }
                         else _.hide()
                     }
 
                     // CANCEL button
                     if (e.target.matches('.cancel-action')) {
-                        if (cbs && cbs.cancelClick) cbs.cancelClick.apply(_, e)
+                        if (cbs && cbs.cancelClick) {
+                            cbs.cancelClick.apply(_, e)
+                            if (_.config.hideOnAction) _.hide()
+                        }
                         else _.hide()
                     }
                 }

@@ -9,6 +9,8 @@ export default {
         dark: false,
         // button types (OK, OK_CANCEL, NONE)
         buttons: 1,
+        // hides dialog on (any) button click if there's a defined callback handler
+        hideOnAction: false,
         // display text for the 'OK' button
         okText: 'Ok',
         // display text for the 'Yes' button

@@ -2115,6 +2115,8 @@
       dark: false,
       // button types (OK, OK_CANCEL, NONE)
       buttons: 1,
+      // hides dialog on (any) button click if there's a defined callback handler
+      hideOnAction: false,
       // display text for the 'OK' button
       okText: 'Ok',
       // display text for the 'Yes' button
@@ -2385,23 +2387,35 @@
                 if (cbs && cbs.itemSelect) cbs.itemSelect.apply(selected, [e, _item]);
               } else dialogPulse();
             } else {
-              if (cbs && cbs.okClick) cbs.okClick.apply(_, e);else _.hide();
+              if (cbs && cbs.okClick) {
+                cbs.okClick.apply(_, e);
+                if (_.config.hideOnAction) _.hide();
+              } else _.hide();
             }
           } // Yes button
 
 
           if (e.target.matches('.yes-action')) {
-            if (cbs && cbs.yesClick) cbs.yesClick.apply(_, e);else _.hide();
+            if (cbs && cbs.yesClick) {
+              cbs.yesClick.apply(_, e);
+              if (_.config.hideOnAction) _.hide();
+            } else _.hide();
           } // No button
 
 
           if (e.target.matches('.no-action')) {
-            if (cbs && cbs.noClick) cbs.noClick.apply(_, e);else _.hide();
+            if (cbs && cbs.noClick) {
+              cbs.noClick.apply(_, e);
+              if (_.config.hideOnAction) _.hide();
+            } else _.hide();
           } // CANCEL button
 
 
           if (e.target.matches('.cancel-action')) {
-            if (cbs && cbs.cancelClick) cbs.cancelClick.apply(_, e);else _.hide();
+            if (cbs && cbs.cancelClick) {
+              cbs.cancelClick.apply(_, e);
+              if (_.config.hideOnAction) _.hide();
+            } else _.hide();
           }
         }
       }
