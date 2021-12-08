@@ -2,7 +2,7 @@ duDialog
 =========
 [![vanilla js](https://img.shields.io/npm/dt/@dmuy/dialog?style=flat-square)](https://www.npmjs.com/package/@dmuy/dialog)
 
-<a href='https://ko-fi.com/dionleeuy' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+<a href='https://ko-fi.com/dionleeuy' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 A simple material concept dialog plugin (no jQuery required, no markup needed).
 
