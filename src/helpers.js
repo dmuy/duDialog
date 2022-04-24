@@ -358,6 +358,15 @@ export function buildUI() {
 
     wrapper = createElem('div', { className: 'dlg-wrapper', tabIndex: 0 })
 
+    // dialog loader
+    let loader = createElem('div', { className: 'dlg-loader' })
+    let loaderWrapper = createElem('div', { className: 'loader-wrapper' })
+
+    appendTo(createElem('div', { className: 'loading-buffer' }), loaderWrapper)
+    appendTo(createElem('div', { className: 'loading-indicator' }), loaderWrapper)
+    appendTo(loaderWrapper, loader)
+    appendTo(loader, wrapper)
+
     appendTo(wrapper, _.dialog)
 
     if (_.title) {

@@ -1,4 +1,4 @@
-import { extend, buildUI, appendTo, defineButtons } from './helpers'
+import { extend, buildUI, appendTo, defineButtons, setAttributes } from './helpers'
 import vars from './vars'
 
 class _duDialog {
@@ -23,6 +23,23 @@ class _duDialog {
 
 		if (!_.config.init)
 			buildUI.apply(_)
+	}
+	/**
+	 * Sets the loading state of the dialog
+	 * @param {Boolean} loading Determines the loading state of the dialog
+	 * @param {Boolean} cancellable Determines if the loading state is cancellable (Cancel action button)
+	 */
+	setLoading(loading, cancellable = false) {
+		let _ = this
+
+		_.loadingState = loading
+		_.loadingCancellable = cancellable
+		_.dialog.classList[loading ? 'add' : 'remove']('dlg--loading')
+		_.dialog.querySelectorAll('.dlg-action').forEach(action => {
+			if (cancellable && action.classList.contains('cancel-action'))
+				return
+			else setAttributes(action, { disabled: loading })
+		})
 	}
 	/**
 	 * Shows the dialog
@@ -70,6 +87,7 @@ class _duDialog {
 	hide() {
 		let _ = this
 
+		_.setLoading(false)
 		_.dialog.classList.add('dlg--closing')
 		setTimeout(() => {
 			document.body.removeChild(_.dialog)

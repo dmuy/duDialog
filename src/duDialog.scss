@@ -59,6 +59,40 @@ $borderRadius: 4px; // dialog & action
 		transition: transform .18s cubic-bezier(.4,0,.2,1);
 		box-shadow: $shadow;
 		overflow: hidden;
+
+		.dlg-loader {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 4px;
+			pointer-events: none;
+			transform-origin: top;
+			transform: scaleY(0);
+			transition: transform .2s linear;
+
+			.loader-wrapper {
+				position: relative;
+				display: flex;
+				height: 100%;
+
+				.loading-buffer {
+					height: 100%;
+					width: 100%;
+					background-color: rgba($color: $selectedColor, $alpha: 0.4);
+				}
+
+				.loading-indicator {
+					position: absolute;
+					top: 0;
+					left: 0;
+					height: 100%;
+					width: 46.67%;
+					transform: translateX(-100%);
+					background-color: $selectedColor;
+				}
+			}
+		}
 	}
 	
 	.dlg-header {
@@ -324,10 +358,16 @@ $borderRadius: 4px; // dialog & action
 		outline: none;
 		transition: background-color .28s linear;
 		will-change: background-color;
-		
-		&:focus, &:hover { background-color: $hoverBg; }
 
-		&:active { background-color: $activeBg; }
+		&:not(:disabled):focus,
+		&:not(:disabled):hover { background-color: $hoverBg; }
+
+		&:not(:disabled):active { background-color: $activeBg; }
+
+		&:disabled {
+			cursor: default;
+			opacity: 0.5;
+		}
 
 		& + .dlg-action { margin-left: 8px; }
 	}
@@ -377,15 +417,29 @@ $borderRadius: 4px; // dialog & action
 			color: $actionColorDark;
 		}
 
-		.dlg-action:focus,
-		.dlg-action:hover,
+		.dlg-action:not(:disabled):focus,
+		.dlg-action:not(:disabled):hover,
 		.dlg-select-item:hover {
 			background-color: $hoverBgDark;
 		}
 
-		.dlg-action:active,
+		.dlg-action:not(:disabled):active,
 		.dlg-select-item:active {
 			background-color: $activeBgDark;
+		}
+	}
+
+	&.dlg--loading {
+		.dlg-wrapper {
+			.dlg-loader {
+				transform: scaleY(1);
+
+				.loader-wrapper {
+					.loading-indicator {
+						animation: dlgLoading 1.45s infinite linear;
+					}
+				}
+			}
 		}
 	}
 }
@@ -398,4 +452,15 @@ $borderRadius: 4px; // dialog & action
 	from { transform: scale(1); }
 	50% { transform: scale(1.05); }
 	to { transform: scale(1); }
+}
+@keyframes dlgLoading {
+	0% {
+		transform: translateX(-100%);
+	}
+	50% {
+		transform: translateX(25%);
+	}
+	100% {
+		transform: translateX(225%);
+	}
 }

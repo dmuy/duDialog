@@ -110,9 +110,14 @@
 						console.log('optOutChanged', optOut)
 					},
 					okClick: function(e) {
-						this.hide()
 						console.log('okClick', this)
+						// this.hide()
+						this.setLoading(true)
 						log('Proceed clicked!')
+						setTimeout(() => {
+							this.setLoading(false)
+							this.hide()
+						}, 3000);
 					}	
 				}
 			}),
@@ -162,7 +167,8 @@
 						// optOutCb: true,
 						callbacks: {
 							yesClick: function (e) {
-								this.hide();
+								// this.hide();
+								this.setLoading(true, true)
 								log('Save clicked!');
 							},
 							noClick: function (e) {
