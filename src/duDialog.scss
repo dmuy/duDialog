@@ -45,6 +45,7 @@ $borderRadius: 4px; // dialog & action
 	z-index: 999999;
 	
 	.dlg-wrapper {
+		position: relative;
 		min-width: 280px;
 		max-width: 90%;
 		max-height: 90%;
@@ -238,6 +239,72 @@ $borderRadius: 4px; // dialog & action
 	.dlg-actions {
 		padding: 8px;
 		text-align: right;
+
+		.opt-out-grp {
+			position: relative;
+			display: flex;
+			margin: 0 16px 12px;
+			color: #757575;
+
+			label {
+				display: flex;
+				height: 20px;
+				padding-left: 16px;
+				margin: 0;
+				align-items: center;
+			}
+
+			input[type="checkbox"] {
+				height: 18px;
+				width: 18px;
+				opacity: 0;
+				margin: 0;
+
+				&  + label::before {
+					content: '';
+					display: block;
+					position: absolute;
+					width: 16px;
+					height: 16px;
+					top: 50%;
+					left: 6px;
+					cursor: pointer;
+					border: 2px solid #757575;
+					transform: translateY(-50%);
+					border-radius: 2px;
+					box-sizing: content-box;
+					transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+					will-change: border-color;
+				}
+	
+				&:checked + label::before {
+					background-color: $selectedColor;
+					border-color: $selectedColor;
+				}
+	
+				& + label::after {
+					content: '';
+					display: block;
+					position: absolute;
+					top: 50%;
+					left: 9px;
+					width: 12px;
+					height: 6px;
+					margin-top: -6px;
+					cursor: pointer;
+					border-left: 2px solid $checkColor;
+					border-bottom: 2px solid $checkColor;
+					box-sizing: content-box;
+					transition: all .2s cubic-bezier(0.0, 0.0, 0.2, 1);
+					transform: rotate(-45deg) scale(0);
+					will-change: transform;
+				}
+				
+				&:checked + label::after {
+					transform: rotate(-45deg) scale(1);
+				}
+			}
+		}
 	}
 	
 	.dlg-action {
@@ -300,6 +367,10 @@ $borderRadius: 4px; // dialog & action
 
 		.dlg-content.content--scrolled {
 			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.opt-out-grp {
+			color: $contentColorDark;
 		}
 
 		.dlg-action {

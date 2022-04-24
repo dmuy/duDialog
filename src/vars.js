@@ -11,6 +11,9 @@ export default {
         buttons: 1,
         // hides dialog on (any) button click if there's a defined callback handler
         hideOnAction: false,
+        // determines if a Don't show again checkbox will be displayed
+        optOutCb: false,
+        optOutText: 'Don\'t show again',
         // display text for the 'OK' button
         okText: 'Ok',
         // display text for the 'Yes' button

@@ -234,6 +234,72 @@
   text-align: right;
 }
 
+.du-dialog .dlg-actions .opt-out-grp {
+  position: relative;
+  display: flex;
+  margin: 0 16px 12px;
+  color: #757575;
+}
+
+.du-dialog .dlg-actions .opt-out-grp label {
+  display: flex;
+  height: 20px;
+  padding-left: 16px;
+  margin: 0;
+  align-items: center;
+}
+
+.du-dialog .dlg-actions .opt-out-grp input[type="checkbox"] {
+  height: 18px;
+  width: 18px;
+  opacity: 0;
+  margin: 0;
+}
+
+.du-dialog .dlg-actions .opt-out-grp input[type="checkbox"] + label::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 6px;
+  cursor: pointer;
+  border: 2px solid #757575;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  box-sizing: content-box;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  will-change: border-color;
+}
+
+.du-dialog .dlg-actions .opt-out-grp input[type="checkbox"]:checked + label::before {
+  background-color: #1e88e5;
+  border-color: #1e88e5;
+}
+
+.du-dialog .dlg-actions .opt-out-grp input[type="checkbox"] + label::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 9px;
+  width: 12px;
+  height: 6px;
+  margin-top: -6px;
+  cursor: pointer;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  box-sizing: content-box;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  transform: rotate(-45deg) scale(0);
+  will-change: transform;
+}
+
+.du-dialog .dlg-actions .opt-out-grp input[type="checkbox"]:checked + label::after {
+  transform: rotate(-45deg) scale(1);
+}
+
 .du-dialog .dlg-action {
   font-family: inherit;
   font-size: 14px;
@@ -304,6 +370,10 @@
 
 .du-dialog[dark="true"] .dlg-content.content--scrolled {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.du-dialog[dark="true"] .opt-out-grp {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .du-dialog[dark="true"] .dlg-action {

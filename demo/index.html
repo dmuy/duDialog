@@ -103,9 +103,15 @@
 				init: true, dark: true, 
 				buttons: duDialog.OK_CANCEL,
 				okText: 'Proceed',
+				optOutCb: true,
+				// optOutText: 'Don\'t remind me',
 				callbacks: {
+					optOutChanged: function(optOut) {
+						console.log('optOutChanged', optOut)
+					},
 					okClick: function(e) {
 						this.hide()
+						console.log('okClick', this)
 						log('Proceed clicked!')
 					}	
 				}
@@ -153,6 +159,7 @@
 				else if (e.target.id === 'trigger6') {
 					duDialog(null, 'You have unsaved changes, do you want to save it?', {
 						buttons: duDialog.YES_NO_CANCEL, yesText: 'Save', noText: 'Discard',
+						// optOutCb: true,
 						callbacks: {
 							yesClick: function (e) {
 								this.hide();

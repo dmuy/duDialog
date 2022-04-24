@@ -19,6 +19,7 @@ class _duDialog {
 		_.title = title
 		_.content = content
 		_.cache = {}
+		_.optOut = false
 
 		if (!_.config.init)
 			buildUI.apply(_)

@@ -270,6 +270,10 @@ export function buildUI() {
                     }
                 } else if (e.target.matches('.dlg-select-checkbox')) {
                     if (_.config.maxSelect) maxSelectCheck()
+                } else if (e.target.matches('.opt-out-cb')) {
+                    _.optOut = e.target.checked
+
+                    if (cbs && cbs.optOutChanged) cbs.optOutChanged.call(_, e.target.checked)
                 }
             }
 
@@ -380,6 +384,16 @@ export function buildUI() {
 
     if (_.type !== vars.buttons.NONE) {
         footer = createElem('div', { className: 'dlg-actions' })
+
+        if (_.config.optOutCb) {
+            let cbID = 'opt-out-cb'
+            let group = createElem('div', { className: 'opt-out-grp' })
+            
+            appendTo(createElem('input', { id: cbID, className: cbID, type: 'checkbox', checked: _.optOut }), group)
+            appendTo(createElem('label', { htmlFor: cbID }, _.config.optOutText), group)
+            appendTo(group, footer)
+        }
+
         appendTo(footer, wrapper)
     }
 
