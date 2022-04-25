@@ -13,6 +13,7 @@ export default {
         hideOnAction: false,
         // determines if a Don't show again checkbox will be displayed
         optOutCb: false,
+        // label for the opt-out checkbox
         optOutText: 'Don\'t show again',
         // display text for the 'OK' button
         okText: 'Ok',
