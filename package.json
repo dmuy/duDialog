@@ -1,6 +1,6 @@
 {
     "name": "@dmuy/dialog",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "description": "A simple material concept dialog plugin",
     "keywords": [
         "dialog",
@@ -19,28 +19,30 @@
     "main": "dist/duDialog.js",
     "files": [
         "dist",
-        "vue-dialog.js"
+        "vue-dialog.js",
+        "vue3-dialog.js"
     ],
     "scripts": {
         "build": "npm run compile && npm run minify",
-        "compile": "rollup --config rollup.config.js && npm run compile-css",
+        "compile": "rollup --config rollup.config.mjs && npm run compile-css",
         "compile-css": "node-sass -x --output-style=expanded src/duDialog.scss -o=dist && postcss --no-map -u autoprefixer -r dist/duDialog.css",
         "minify": "uglifyjs dist/duDialog.js -c -m -o dist/duDialog.min.js && npm run minify-css",
         "minify-css": "postcss dist/duDialog.css --no-map -o dist/duDialog.min.css --config postcss.config.js"
     },
     "devDependencies": {
-        "@babel/core": "^7.17.9",
-        "@babel/preset-env": "^7.16.11",
-        "@rollup/plugin-babel": "^5.3.1",
-        "@rollup/plugin-commonjs": "^19.0.2",
-        "@rollup/plugin-node-resolve": "^9.0.0",
-        "autoprefixer": "^9.8.8",
-        "core-js": "^3.22.2",
-        "cssnano": "^4.1.11",
-        "node-sass": "^4.14.1",
-        "postcss-cli": "^7.1.2",
-        "rollup": "^2.70.2",
-        "uglify-js": "^3.15.4"
+        "@babel/core": "^7.21.4",
+        "@babel/preset-env": "^7.21.4",
+        "@rollup/plugin-babel": "^6.0.3",
+        "@rollup/plugin-commonjs": "^24.1.0",
+        "@rollup/plugin-node-resolve": "^15.0.2",
+        "autoprefixer": "^10.4.14",
+        "core-js": "^3.30.1",
+        "cssnano": "^6.0.0",
+        "node-sass": "^8.0.0",
+        "postcss": "^8.4.21",
+        "postcss-cli": "^10.1.0",
+        "rollup": "^3.20.2",
+        "uglify-js": "^3.17.4"
     },
     "dependencies": {}
 }

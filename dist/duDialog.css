@@ -19,7 +19,6 @@
   opacity: 0;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
   background-color: transparent;
   transition: background-color .2s linear, opacity .2s ease;
@@ -387,8 +386,7 @@
 }
 
 .du-dialog.dlg--pulse {
-  -webkit-animation: dlgPulse 200ms;
-          animation: dlgPulse 200ms;
+  animation: dlgPulse 200ms;
 }
 
 .du-dialog.dlg--no-title .dlg-content {
@@ -436,25 +434,12 @@
 }
 
 .du-dialog.dlg--loading .dlg-wrapper .dlg-loader .loader-wrapper .loading-indicator {
-  -webkit-animation: dlgLoading 1.45s infinite linear;
-          animation: dlgLoading 1.45s infinite linear;
+  animation: dlgLoading 1.45s infinite linear;
 }
 
 @media (min-width: 600px) {
   .du-dialog .dlg-wrapper {
     max-width: 560px;
-  }
-}
-
-@-webkit-keyframes dlgPulse {
-  from {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  to {
-    transform: scale(1);
   }
 }
 
@@ -467,18 +452,6 @@
   }
   to {
     transform: scale(1);
-  }
-}
-
-@-webkit-keyframes dlgLoading {
-  0% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(25%);
-  }
-  100% {
-    transform: translateX(225%);
   }
 }
 
