@@ -1,5 +1,5 @@
 import './dist/duDialog.css'
-import duDialog from './dist/duDialog.js'
+import duDialog from './dist/duDialog.umd.js'
 
 export default {
     install(Vue, options) {

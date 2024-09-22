@@ -1,48 +1,41 @@
 {
-    "name": "@dmuy/dialog",
-    "version": "1.1.5",
-    "description": "A simple material concept dialog plugin",
-    "keywords": [
-        "dialog",
-        "material-dialog",
-        "selection-dialog",
-        "dialog-plugin",
-        "multi-select-dialog"
-    ],
-    "license": "MIT",
-    "author": {
-        "name": "Dionlee Uy",
-        "email": "dionleeuy@gmail.com"
-    },
-    "repository": "git://github.com/dmuy/duDialog.git",
-    "homepage": "https://dmuy.github.io/duDialog/",
-    "main": "dist/duDialog.js",
-    "files": [
-        "dist",
-        "vue-dialog.js",
-        "vue3-dialog.js"
-    ],
-    "scripts": {
-        "build": "npm run compile && npm run minify",
-        "compile": "rollup --config rollup.config.mjs && npm run compile-css",
-        "compile-css": "node-sass -x --output-style=expanded src/duDialog.scss -o=dist && postcss --no-map -u autoprefixer -r dist/duDialog.css",
-        "minify": "uglifyjs dist/duDialog.js -c -m -o dist/duDialog.min.js && npm run minify-css",
-        "minify-css": "postcss dist/duDialog.css --no-map -o dist/duDialog.min.css --config postcss.config.js"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.21.4",
-        "@babel/preset-env": "^7.21.4",
-        "@rollup/plugin-babel": "^6.0.3",
-        "@rollup/plugin-commonjs": "^24.1.0",
-        "@rollup/plugin-node-resolve": "^15.0.2",
-        "autoprefixer": "^10.4.14",
-        "core-js": "^3.30.1",
-        "cssnano": "^6.0.0",
-        "node-sass": "^8.0.0",
-        "postcss": "^8.4.21",
-        "postcss-cli": "^10.1.0",
-        "rollup": "^3.20.2",
-        "uglify-js": "^3.17.4"
-    },
-    "dependencies": {}
+  "name": "@dmuy/dialog",
+  "version": "1.1.5",
+  "description": "A simple material concept dialog plugin",
+  "keywords": [
+    "dialog",
+    "material-dialog",
+    "selection-dialog",
+    "dialog-plugin",
+    "multi-select-dialog"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Dionlee Uy",
+    "email": "dionleeuy@gmail.com"
+  },
+  "repository": "git://github.com/dmuy/duDialog.git",
+  "homepage": "https://dmuy.github.io/duDialog/",
+  "main": "dist/duDialog.js",
+  "type": "module",
+  "types": "dist/duDialog.d.ts",
+  "files": [
+    "dist",
+    "vue-dialog.js",
+    "vue3-dialog.js"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && npm run minify-es-build && npm run minify-umd-build && npm run minify-css",
+    "minify-es-build": "esbuild dist/duDialog.es.js --minify --outfile=dist/duDialog.es.min.js --allow-overwrite",
+    "minify-umd-build": "esbuild dist/duDialog.js --minify --outfile=dist/duDialog.min.js --allow-overwrite",
+    "minify-css": "esbuild dist/duDialog.css --minify --outfile=dist/duDialog.min.css --allow-overwrite"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.1",
+    "sass": "^1.78.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1",
+    "vite-plugin-dts": "^4.2.1"
+  }
 }
