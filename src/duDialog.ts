@@ -77,7 +77,7 @@ export interface IDialogConfig {
 	/**
 	 * Button types (OK, OK_CANCEL, NONE)
 	 */
-	buttons: number;
+	buttons: TDialogButtons;
 	/**
 	 * Callback functions
 	 */
@@ -180,18 +180,13 @@ export interface ISelectGroup {
 
 type TDialogSelect = string | ISelectItem | ISelectGroup | any
 
-enum DialogButtons {
-	DEFAULT = 1,
-	OK_CANCEL = 2,
-	YES_NO_CANCEL = 3,
-	NONE = 0,
-}
+export type TDialogButtons = 'DEFAULT' | 'OK_CANCEL' | 'YES_NO_CANCEL' | 'NONE'
 
 const DEFAULTS: IDialogConfig = {
 	id: null,
 	init: false,
 	dark: false,
-	buttons: DialogButtons.DEFAULT,
+	buttons: 'DEFAULT',
 	hideOnAction: false,
 	optOutCb: false,
 	optOutText: 'Don\'t show again',
@@ -222,11 +217,11 @@ class duDialog {
 	loadingState: boolean = false;
 	optOut: boolean;
 	title: string;
-	type: number;
-	static readonly DEFAULT: number = DialogButtons.DEFAULT;
-	static readonly OK_CANCEL: number = DialogButtons.OK_CANCEL;
-	static readonly YES_NO_CANCEL: number = DialogButtons.YES_NO_CANCEL;
-	static readonly NONE: number = DialogButtons.NONE;
+	type: TDialogButtons;
+	static readonly DEFAULT: TDialogButtons = 'DEFAULT';
+	static readonly OK_CANCEL: TDialogButtons = 'OK_CANCEL';
+	static readonly YES_NO_CANCEL: TDialogButtons = 'YES_NO_CANCEL';
+	static readonly NONE: TDialogButtons = 'NONE';
 	/**
 	 * Creates a dialog
 	 * @param title Dialog title
@@ -606,6 +601,22 @@ class duDialog {
 			if (cancellable && action.classList.contains('cancel-action')) return
 			else setAttributes(action as HTMLElement, { disabled: loading })
 		})
+	}
+	/**
+	 * Sets the dialog config
+	 * @param config Config name
+	 * @param value Config value
+	 */
+	setOption<K extends keyof IDialogConfig>(config: K, value: IDialogConfig[K]) {
+		// this.config[config] = value
+		Object.assign(this.config, { [config]: value })
+	}
+	/**
+	 * Sets the dialog configurations
+	 * @param options Configurations
+	 */
+	setOptions(options: IDialogConfig) {
+		Object.assign(this.config, options)
 	}
 	/**
 	 * Shows the dialog

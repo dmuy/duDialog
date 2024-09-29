@@ -1,13 +1,13 @@
 /**
  * Sets element attributes
  * @param {HTMLElement} el Element to set attributes
- * @param {Object} attrs Attributes object
+ * @param {any} attrs Attributes object
  */
-export function setAttributes(el: HTMLElement, attrs: object) {
+export function setAttributes(el: HTMLElement, attrs: any) {
     /* src: http://jsfiddle.net/andr3ww/pvuzgfg6/13/ */
-    var recursiveSet = function (at: any, set: any) {
-        for (var prop in at) {
-            var a = at[prop]
+    const recursiveSet = (attr: any, set: any) => {
+        for (const prop in attr) {
+            const a = attr[prop]
             if ((typeof a === 'object' && a !== null) && a.dataset === undefined && a[0] === undefined) {
                 recursiveSet(a, set[prop])
             }
@@ -43,7 +43,7 @@ export function inArray(arr: Array<any>, item: string | object | number) {
     if (!arr) return false
     if (arr[0] === undefined) return false
 
-    return arr.filter(function (x) { return x === item }).length > 0
+    return arr.filter(x => x === item).length > 0
 }
 
 /**
@@ -54,9 +54,7 @@ export function inArray(arr: Array<any>, item: string | object | number) {
  */
 export function addEvent(elem: HTMLElement | Array<HTMLElement>, event: string, handler: (e: Event) => void) {
     if (Array.isArray(elem)) {
-        elem.forEach(el => {
-            el.addEventListener(event, handler, false)
-        })
+        elem.forEach(el => el.addEventListener(event, handler, false))
     }
     else {
         elem.addEventListener(event, handler, false)
@@ -70,9 +68,7 @@ export function addEvent(elem: HTMLElement | Array<HTMLElement>, event: string, 
  * @param {Function} handler Event handler
  */
 export function addEvents(el: HTMLElement, events: string[], handler: (e: Event) => void) {
-    events.forEach(evt => {
-        el.addEventListener(evt, handler, false)
-    })
+    events.forEach(evt => el.addEventListener(evt, handler, false))
 }
 
 /**
@@ -82,7 +78,7 @@ export function addEvents(el: HTMLElement, events: string[], handler: (e: Event)
  */
 export function appendTo(elem: DocumentFragment | HTMLElement | Array<HTMLElement>, to: HTMLElement | DocumentFragment) {
     if (Array.isArray(elem)) {
-        elem.forEach((el) => to.appendChild(el))
+        elem.forEach(el => to.appendChild(el))
     }
     else {
         to.appendChild(elem)
@@ -97,7 +93,7 @@ export function appendTo(elem: DocumentFragment | HTMLElement | Array<HTMLElemen
  * @param {boolean} isHtml Determines if content is HTML
  */
 export function createElem(tag: string, attributes: any, content?: string, isHtml?: boolean) {
-    var el = document.createElement(tag)
+    const el = document.createElement(tag)
 
     if (typeof content !== 'undefined')
         el[isHtml || false ? 'innerHTML' : 'innerText'] = content

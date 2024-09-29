@@ -64,7 +64,7 @@ export interface IDialogConfig {
     /**
      * Button types (OK, OK_CANCEL, NONE)
      */
-    buttons: number;
+    buttons: TDialogButtons;
     /**
      * Callback functions
      */
@@ -163,6 +163,7 @@ export interface ISelectGroup {
     items: Array<string | ISelectItem | any>;
 }
 type TDialogSelect = string | ISelectItem | ISelectGroup | any;
+export type TDialogButtons = 'DEFAULT' | 'OK_CANCEL' | 'YES_NO_CANCEL' | 'NONE';
 declare class duDialog {
     static _defaults: IDialogConfig;
     cache: any;
@@ -174,11 +175,11 @@ declare class duDialog {
     loadingState: boolean;
     optOut: boolean;
     title: string;
-    type: number;
-    static readonly DEFAULT: number;
-    static readonly OK_CANCEL: number;
-    static readonly YES_NO_CANCEL: number;
-    static readonly NONE: number;
+    type: TDialogButtons;
+    static readonly DEFAULT: TDialogButtons;
+    static readonly OK_CANCEL: TDialogButtons;
+    static readonly YES_NO_CANCEL: TDialogButtons;
+    static readonly NONE: TDialogButtons;
     /**
      * Creates a dialog
      * @param title Dialog title
@@ -200,6 +201,17 @@ declare class duDialog {
      * @param {Boolean} cancellable Determines if the loading state is cancellable (Cancel action button)
      */
     setLoading(loading: boolean, cancellable?: boolean): void;
+    /**
+     * Sets the dialog config
+     * @param config Config name
+     * @param value Config value
+     */
+    setOption<K extends keyof IDialogConfig>(config: K, value: IDialogConfig[K]): void;
+    /**
+     * Sets the dialog configurations
+     * @param options Configurations
+     */
+    setOptions(options: IDialogConfig): void;
     /**
      * Shows the dialog
      */

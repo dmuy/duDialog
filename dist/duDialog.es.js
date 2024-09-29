@@ -2,9 +2,9 @@ var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 function setAttributes(el, attrs) {
-  var recursiveSet = function(at, set) {
-    for (var prop in at) {
-      var a = at[prop];
+  const recursiveSet = (attr, set) => {
+    for (const prop in attr) {
+      const a = attr[prop];
       if (typeof a === "object" && a !== null && a.dataset === void 0 && a[0] === void 0) {
         recursiveSet(a, set[prop]);
       } else {
@@ -27,23 +27,17 @@ function removeSpace(str) {
 function inArray(arr, item) {
   if (!arr) return false;
   if (arr[0] === void 0) return false;
-  return arr.filter(function(x) {
-    return x === item;
-  }).length > 0;
+  return arr.filter((x) => x === item).length > 0;
 }
 function addEvent(elem, event, handler) {
   if (Array.isArray(elem)) {
-    elem.forEach((el) => {
-      el.addEventListener(event, handler, false);
-    });
+    elem.forEach((el) => el.addEventListener(event, handler, false));
   } else {
     elem.addEventListener(event, handler, false);
   }
 }
 function addEvents(el, events, handler) {
-  events.forEach((evt) => {
-    el.addEventListener(evt, handler, false);
-  });
+  events.forEach((evt) => el.addEventListener(evt, handler, false));
 }
 function appendTo(elem, to) {
   if (Array.isArray(elem)) {
@@ -53,7 +47,7 @@ function appendTo(elem, to) {
   }
 }
 function createElem(tag, attributes, content, isHtml) {
-  var el = document.createElement(tag);
+  const el = document.createElement(tag);
   if (typeof content !== "undefined")
     el[isHtml || false ? "innerHTML" : "innerText"] = content;
   if (typeof attributes !== "undefined")
@@ -64,7 +58,7 @@ const DEFAULTS = {
   id: null,
   init: false,
   dark: false,
-  buttons: 1,
+  buttons: "DEFAULT",
   hideOnAction: false,
   optOutCb: false,
   optOutText: "Don't show again",
@@ -374,6 +368,21 @@ const _duDialog = class _duDialog {
     });
   }
   /**
+   * Sets the dialog config
+   * @param config Config name
+   * @param value Config value
+   */
+  setOption(config, value) {
+    Object.assign(this.config, { [config]: value });
+  }
+  /**
+   * Sets the dialog configurations
+   * @param options Configurations
+   */
+  setOptions(options) {
+    Object.assign(this.config, options);
+  }
+  /**
    * Shows the dialog
    */
   show() {
@@ -421,10 +430,10 @@ const _duDialog = class _duDialog {
   }
 };
 __publicField(_duDialog, "_defaults", DEFAULTS);
-__publicField(_duDialog, "DEFAULT", 1);
-__publicField(_duDialog, "OK_CANCEL", 2);
-__publicField(_duDialog, "YES_NO_CANCEL", 3);
-__publicField(_duDialog, "NONE", 0);
+__publicField(_duDialog, "DEFAULT", "DEFAULT");
+__publicField(_duDialog, "OK_CANCEL", "OK_CANCEL");
+__publicField(_duDialog, "YES_NO_CANCEL", "YES_NO_CANCEL");
+__publicField(_duDialog, "NONE", "NONE");
 let duDialog = _duDialog;
 export {
   duDialog as default

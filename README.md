@@ -19,13 +19,4 @@ A simple material concept dialog plugin (no jQuery required, no markup needed).
 * [Usage (Vue)](https://github.com/dmuy/duDialog/wiki/Usage-(Vue))
   * [Nuxt](https://github.com/dmuy/duDialog/wiki/Usage-(Vue)#nuxt)
 
-**[DEMO](https://dmuy.github.io/duDialog/)**
-
-## Screenshots
-![alt text](https://i.imgur.com/b0jmCzy.png "Confirmation dialog")
-![alt text](https://i.imgur.com/WdNqIt5.png "Confirmation dialog (dark)")
-
-![alt text](https://i.imgur.com/fEgkxNW.png "Single select dialog")
-
-![alt text](https://i.imgur.com/LR1Zffx.png "Multiple select dialog")
-![alt text](https://i.imgur.com/gutG6GD.png "Multiple select dialog (dark)")
+## [DEMO](https://dmuy.github.io/duDialog/)
